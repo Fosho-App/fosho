@@ -1,2 +1,3 @@
 [submodule "fosho-program"]
+	path = fosho-program
 	url = https://github.com/Fosho-App/fosho-program
