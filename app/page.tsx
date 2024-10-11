@@ -2,7 +2,7 @@
 
 import Logo from "./ui/logo";
 
-import { DefaultButton, SecondaryButton } from "./ui/buttons";
+import { SecondaryButton } from "./ui/buttons";
 import { bebas, inter } from "./ui/fonts";
 import WalletButton from "./ui/wallet-button";
 import { useWallet } from "@solana/wallet-adapter-react";
