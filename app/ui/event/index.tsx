@@ -15,7 +15,7 @@ export default function Event() {
         <MdOutlineCalendarMonth className="text-secondary-color text-xl" />
       </div>
       <p className="text-secondary-color text-sm mt-4">Wed, Oct. 18 2:00PM</p>
-      <h3 className="text-white font-semibold">First Day Check-in "tick"</h3>
+      <h3 className="text-white font-semibold">First Day Check-in &ldquo;tick&rdquo;</h3>
       <p className="text-secondary-color text-sm">Limit: 12/30 People</p>
       <div className="flex gap-2 mt-4">
       <div className="w-1/2 bg-[#1F1F1F] py-2 px-4 rounded-lg">
