@@ -1,13 +1,14 @@
 
-import { useConnection, useWallet } from "@solana/wallet-adapter-react"
-import { PublicKey } from "@solana/web3.js"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { useMutation } from "@tanstack/react-query"
 import createProfile from "../actions/createProfile"
 
-export function useCreateProfile(user?: PublicKey) {
-  const {connection} = useConnection()
+export function useCreateProfile(
+  // user?: PublicKey
+) {
+  // const {connection} = useConnection()
   const wallet = useWallet()
-  const client = useQueryClient()
+  // const client = useQueryClient()
 
   return useMutation({
     mutationKey: ["create-user-profile", {publicKey: wallet.publicKey}],

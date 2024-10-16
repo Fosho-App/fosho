@@ -1,6 +1,5 @@
 'use client'
 
-import Event from "@/app/ui/event"
 import IslandDaoEvent from "@/app/ui/event/island-dao"
 import { bigShouldersText, inter } from "@/app/ui/fonts"
 import WalletButton from "@/app/ui/wallet-button"

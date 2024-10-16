@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from "react";
-import createProfile from "../actions/createProfile";
-import { useCreateProfile } from "../hooks/useCreateProfile";
+// import createProfile from "../actions/createProfile";
+// import { useCreateProfile } from "../hooks/useCreateProfile";
 import { bebas, inter } from "../ui/fonts";
 import Logo from "../ui/logo";
 import ProfileForm from "../ui/profile/form";
@@ -18,7 +18,7 @@ export type ProfileData = {
 }
 
 export default function Profile() {
-  const {mutate} = useCreateProfile()
+  // const {mutate} = useCreateProfile()
   const router = useRouter()
   const [profile, setProfile] = useState<ProfileData>({
     name: null,

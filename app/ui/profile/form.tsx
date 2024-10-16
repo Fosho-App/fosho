@@ -1,4 +1,3 @@
-import { FormEvent } from "react";
 import { inter } from "../fonts";
 import { DefaultButton } from "../buttons";
 import { ProfileData } from "@/app/profile/page";

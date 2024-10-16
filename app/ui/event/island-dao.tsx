@@ -1,6 +1,4 @@
-import { bebas, inter } from "../fonts";
-import Image from "next/image";
-import { MdOutlineCalendarMonth } from "react-icons/md";
+import { inter } from "../fonts";
 
 export default function IslandDaoEvent() {
   return (
