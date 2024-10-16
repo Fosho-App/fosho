@@ -12,7 +12,9 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         "secondary-color": "#ACACAC",
-        "background-main": "#151515"
+        "background-main": "#151515",
+        "primary-green": "#062310",
+        "light-green": "#73A584"
       },
       boxShadow: {
         'event': '0px 2px 12px 0px #0623101A'

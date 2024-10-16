@@ -17,19 +17,19 @@ export default function Home() {
   }
 
   return (
-    <div className="h-screen w-[480px]">
-      <div className="w-[480px] h-[60%] relative inline-block overflow-hidden">
+    <div className="m-auto h-screen m-w-[480px]">
+      <div className="w-full h-[60%] relative inline-block overflow-hidden">
         <img src="./images/home.png" alt="" className="absolute block top-0 left-0"/>
       </div>
       <div className="mx-8 mt-4 flex flex-col gap-4 w-2/3">
         <Logo />
-        <h2 className={`${bebas.className} text-3xl`}>
+        <h2 className={`${bebas.className} text-2xl md:text-3xl`}>
           your gateway to Solana Events <br />
           Commit, Earn, Influence <br />
           Feel the FOMO
         </h2>
       </div>
-      <div className={`${inter.className} flex mx-8 mt-16 gap-4`}>
+      <div className={`${inter.className} flex mx-8 mt-12 gap-4`}>
         <WalletButton />
         <SecondaryButton>Learn More</SecondaryButton>
       </div>
