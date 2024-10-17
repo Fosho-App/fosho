@@ -38,10 +38,22 @@ export default function ProfileForm({
 
   return (
     <div className="m-2 flex flex-col">
-      <FormElement handleChange={handleChange} elementId="name" placeholder="Full Name" label="Name" currentValue={profile.name} />
-      <FormElement handleChange={handleChange} elementId="twitter" placeholder="@Handle" label="Twitter (X)" currentValue={profile.twitter}/>
-      <FormElement handleChange={handleChange} elementId="telegram" placeholder="@Handle" label="Telegram" currentValue={profile.telegram}/>
-      <FormElement handleChange={handleChange} elementId="about" placeholder="Tell us about yourself" label="About Me" currentValue={profile.about}/>
+      <FormElement 
+        handleChange={handleChange} 
+        elementId="name" placeholder="Full Name" label="Name" currentValue={profile.name} 
+      />
+      <FormElement 
+        handleChange={handleChange} 
+        elementId="twitter" placeholder="@Handle" label="Twitter (X)" currentValue={profile.twitter}
+      />
+      <FormElement 
+        handleChange={handleChange} 
+        elementId="telegram" placeholder="@Handle" label="Telegram" currentValue={profile.telegram}
+      />
+      <FormElement 
+        handleChange={handleChange} 
+        elementId="about" placeholder="Tell us about yourself" label="About Me" currentValue={profile.about}
+      />
       <div className="w-4/6 text-center m-auto mt-2">
         <DefaultButton 
           onClick={updateProfile}
