@@ -1,14 +1,18 @@
 import { ReactNode } from "react";
 
-export function DefaultButton({children, onClick}: {children: ReactNode, onClick?: () => void}) {
+export function DefaultButton(
+  {children, onClick, disabled}: 
+  {children: ReactNode, disabled?: boolean, onClick?: () => void}) 
+{
   return (
-    <div className="
+    <button className="
       bg-white rounded-3xl border-0 text-black 
-      font-semibold text-sm px-4 py-2 cursor-pointer"
+      font-semibold text-sm px-6 py-2 cursor-pointer"
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
-    </div>
+    </button>
   )
 }
 

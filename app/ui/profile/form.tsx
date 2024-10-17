@@ -3,8 +3,8 @@ import { DefaultButton } from "../buttons";
 import { ProfileData } from "@/app/profile/page";
 
 function FormElement(
-  {elementId, placeholder, label, handleChange} :
-  {elementId: string, placeholder: string, label: string, handleChange: (t: string, v: string) => void}
+  {elementId, placeholder, label, currentValue, handleChange} :
+  {elementId: string, placeholder: string, label: string, currentValue: string | null, handleChange: (t: string, v: string) => void}
 ) {
   return (
     <div className="mb-4">
@@ -12,9 +12,10 @@ function FormElement(
       <input 
         type="text" 
         id={elementId}
+        value={currentValue ?? ""}
         onChange={e => handleChange(elementId, e.target.value)}
-        className="bg-[#222222] border-[1px] border-[#414141] rounded-md w-full
-        placeholder:text-[#9A9A9A] py-[2px] placeholder:font-sans placeholder:text-xs placeholder:pl-2
+        className="bg-[#222222] border-[1px] border-[#414141] rounded-md w-full text-sm
+        placeholder:text-[#9A9A9A] py-1 placeholder:font-sans placeholder:text-xs placeholder:pl-2
         max-w-[480px]"
         placeholder={placeholder}
       />
@@ -23,11 +24,12 @@ function FormElement(
 }
 
 export default function ProfileForm({
-  profile, setProfile, updateProfile
+  profile, isPending, setProfile, updateProfile
 }: {
   profile: ProfileData,
+  isPending: boolean
   setProfile: (v: ProfileData) => void,
-  updateProfile: () => void
+  updateProfile: () => void,
 }) {
 
   function handleChange(type: string, newValue: string) {
@@ -35,14 +37,19 @@ export default function ProfileForm({
   }
 
   return (
-    <form className="m-2 flex flex-col">
-      <FormElement handleChange={handleChange} elementId="name" placeholder="Full Name" label="Name"/>
-      <FormElement handleChange={handleChange} elementId="twitter" placeholder="@Handle" label="Twitter (X)"/>
-      <FormElement handleChange={handleChange} elementId="telegram" placeholder="@Handle" label="Telegram"/>
-      <FormElement handleChange={handleChange} elementId="aboutMe" placeholder="Tell us about yourself" label="About Me"/>
+    <div className="m-2 flex flex-col">
+      <FormElement handleChange={handleChange} elementId="name" placeholder="Full Name" label="Name" currentValue={profile.name} />
+      <FormElement handleChange={handleChange} elementId="twitter" placeholder="@Handle" label="Twitter (X)" currentValue={profile.twitter}/>
+      <FormElement handleChange={handleChange} elementId="telegram" placeholder="@Handle" label="Telegram" currentValue={profile.telegram}/>
+      <FormElement handleChange={handleChange} elementId="about" placeholder="Tell us about yourself" label="About Me" currentValue={profile.about}/>
       <div className="w-4/6 text-center m-auto mt-2">
-        <DefaultButton onClick={updateProfile}>Update Profile</DefaultButton>
+        <DefaultButton 
+          onClick={updateProfile}
+          disabled={isPending}
+        >
+          {isPending ? 'Updating' : 'Update Profile'}
+        </DefaultButton>
       </div>
-    </form>
+    </div>
   )
 }
