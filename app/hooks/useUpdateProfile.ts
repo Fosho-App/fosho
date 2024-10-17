@@ -1,13 +1,12 @@
 
 import { useWallet } from "@solana/wallet-adapter-react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { ProfileData } from "../profile/page"
 import updateProfileHandler from "../actions/updateProfile"
 import { decodeUTF8 } from "tweetnacl-util"
 
 export function useUpdateProfile() {
   const wallet = useWallet()
-  const client = useQueryClient()
 
   return useMutation({
     mutationKey: ["create-user-profile", {publicKey: wallet.publicKey}],

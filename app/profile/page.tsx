@@ -1,17 +1,12 @@
 'use client'
 
 import { useEffect, useState } from "react";
-// import createProfile from "../actions/createProfile";
-// import { useCreateProfile } from "../hooks/useCreateProfile";
 import { bebas, inter } from "../ui/fonts";
 import Logo from "../ui/logo";
 import ProfileForm from "../ui/profile/form";
 import { WalletButtonProfile } from "../ui/wallet-button";
 import { IoMdFastforward } from "react-icons/io";
 import { useRouter } from "next/navigation";
-import nacl from "tweetnacl";
-import { decodeUTF8 } from "tweetnacl-util";
-import { WalletContextState, useWallet } from "@solana/wallet-adapter-react";
 import { useGetProfileData } from "../hooks/useProfileData";
 import { useUpdateProfile } from "../hooks/useUpdateProfile";
 
@@ -23,7 +18,6 @@ export type ProfileData = {
 }
 
 export default function Profile() {
-  const wallet = useWallet()
   const router = useRouter()
   const [profile, setProfile] = useState<ProfileData>({
     name: null,
