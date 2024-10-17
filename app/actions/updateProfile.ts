@@ -42,7 +42,7 @@ export default async function updateProfileHandler(
     WHERE wallet=${walletAddress}
   `;
 
-  const data = currentData.rowCount ?
+  currentData.rowCount ?
     await sql`
       UPDATE profiles Set name=${profileData.name ?? ''}, twitter=${profileData.twitter ?? ''},
       telegram=${profileData.telegram ?? ''}, about=${profileData.about ?? ''}
