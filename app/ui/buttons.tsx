@@ -26,3 +26,13 @@ export function SecondaryButton({children}: {children: ReactNode}) {
     </div>
   )
 }
+
+export function GradientButton({children, full} : {children: ReactNode, full?: boolean}) {
+  return (
+    <button className={`text-white bg-gradient-to-b from-[#73A584] to-[#062310] 
+      rounded-2xl py-2 px-4 text-sm font-semibold ${full ? "w-full" : ""}`}
+    >
+      {children}
+    </button>
+  )
+}

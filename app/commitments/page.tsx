@@ -1,5 +1,5 @@
 import { DefaultButton } from "@/app/ui/buttons";
-import Event from "@/app/ui/event";
+import Event from "@/app/ui/events";
 import { bebas } from "@/app/ui/fonts";
 
 export default function Commitments() {

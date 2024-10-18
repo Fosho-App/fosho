@@ -3,7 +3,7 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
-import { ellipsify } from "./utils";
+import { ellipsify } from "../utils";
 
 function WalletButton() {
   const {publicKey} = useWallet()
@@ -33,6 +33,25 @@ export function WalletButtonProfile() {
         fontWeight: 400, 
         fontSize: "13px",
         border: "1px solid #414141",
+      }}>
+        {publicKey? ellipsify(publicKey.toBase58()) : "Connect Wallet"}
+      </WalletMultiButton>
+    </div>   
+  )
+}
+
+export function WalletButtonEvent() {
+  const {publicKey} = useWallet()
+
+  return (
+    <div>
+      <WalletMultiButton style={{
+        background: "linear-gradient(to bottom, #DBFCE1, #BDEBC4)",
+        padding: "6px 16px",
+        color: "#000000", 
+        fontWeight: 500, 
+        fontSize: "13px",
+        border: "1px solid #73A584",
       }}>
         {publicKey? ellipsify(publicKey.toBase58()) : "Connect Wallet"}
       </WalletMultiButton>
