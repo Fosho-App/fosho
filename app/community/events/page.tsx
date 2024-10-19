@@ -1,5 +1,6 @@
 'use client'
 
+import { useGetCommunity } from "@/app/hooks/useCommunity"
 import { useGetEvents } from "@/app/hooks/useGetEvents"
 import { ClientContext, ClientContextType } from "@/app/providers/client-provider"
 import { GradientButton } from "@/app/ui/buttons"
@@ -7,6 +8,7 @@ import EventHeader from "@/app/ui/events/header"
 import IslandDaoEvent from "@/app/ui/events/island-dao"
 import SocialLinks from "@/app/ui/events/socials"
 import { WalletButtonEvent } from "@/app/ui/wallet-button"
+import { useWallet } from "@solana/wallet-adapter-react"
 import { useRouter } from "next/navigation"
 import { useContext } from "react"
 import { BiTrophy } from "react-icons/bi"
@@ -16,8 +18,10 @@ import { PiSquaresFourBold } from "react-icons/pi"
 
 export default function Events() {
   const router = useRouter()
+  const {publicKey} = useWallet()
   const {client} = useContext(ClientContext) as ClientContextType
   const events = useGetEvents(client)
+  const community = useGetCommunity(client).data
 
   function onClick(key: string) {
     router.push(`./events/${key}`)
@@ -36,6 +40,13 @@ export default function Events() {
           <SocialLinks />
           <GradientButton>Claim Rewards</GradientButton>
         </div>
+        {
+          publicKey && community?.authority.equals(publicKey) ?
+          <div className="w-full mt-4" onClick={() => router.push("./events/create")}>
+            <GradientButton full={true}>Create Event</GradientButton>
+          </div> :
+          ""
+        }
         <div className="mt-4 mb-12">
           {
             events.isFetching ?

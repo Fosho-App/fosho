@@ -6,6 +6,7 @@ import { AnchorWallet } from "@solana/wallet-adapter-react";
 import { IdlTypes } from "@coral-xyz/anchor";
 
 // const programId = new PublicKey("5ojhS89XpkvrSyagCddG7fv4wh2ffx8kVA6ABDYttZdN");
+type CommunityInfo = IdlTypes<FoshoProgram>["community"];
 type EventInfoWoPubkey = IdlTypes<FoshoProgram>["event"];
 export interface EventInfo extends EventInfoWoPubkey { publicKey: PublicKey};
 
@@ -20,10 +21,9 @@ export function createClient(connection: Connection, wallet: AnchorWallet) {
 
 export async function getEvents(
   program: Program<FoshoProgram>,
-  community: PublicKey
+  community: PublicKey,
+  communityData: CommunityInfo
 ) {
-  const communityData = await program.account.community.fetch(community)
-
   const events: EventInfo[] = [];
 
   for (let i = 0; i < communityData.eventsCount; i++) {
