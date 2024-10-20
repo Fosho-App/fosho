@@ -16,13 +16,11 @@ export default function CreateEventForm(
 
   function handleDateChange(newValue: string, isDate: boolean, isEventDate: boolean) {
     if (isEventDate) {
-      console.log(event.eventDate)
       const currentDate = new Date(event.eventDate)
       const newDateString = isDate ?
         newValue + " " + currentDate.toTimeString().substring(0,8) :
-        `${currentDate.getFullYear()}-${(new Date(event.eventDate).getMonth()+1).toString().padStart(2,"0")}-${currentDate.getDate()} ${newValue}`
+        `${currentDate.getFullYear()}-${(new Date(currentDate).getMonth()+1).toString().padStart(2,"0")}-${currentDate.getDate()} ${newValue}`
   
-      console.log(newDateString)
       const newDate = Date.parse(newDateString)
       
       setEvent({...event, eventDate: newDate})
@@ -31,13 +29,12 @@ export default function CreateEventForm(
       const currentDate = new Date(event.registrationDate)
       const newDateString = isDate ?
         newValue + " " + currentDate.toTimeString().substring(0,8) :
-        `${currentDate.getFullYear()}-${(new Date(event.eventDate).getMonth()+1).toString().padStart(2,"0")}-${currentDate.getDate()} ${newValue}`
+        `${currentDate.getFullYear()}-${(new Date(currentDate).getMonth()+1).toString().padStart(2,"0")}-${currentDate.getDate()} ${newValue}`
 
       const newDate = Date.parse(newDateString)
 
       setEvent({...event, registrationDate: newDate})
     }
-
   }
   
   return (
@@ -98,7 +95,7 @@ export default function CreateEventForm(
         <div className="flex flex-col gap-[2px] w-1/2">
           <label htmlFor="" className={`${bebas.className}`}>Reg. Deadline Date</label>
           <input type="date" id="" className="p-1 border-[1px] border-light-green rounded-lg" 
-            value={`${new Date(event.registrationDate).getFullYear()}-${(new Date(event.eventDate).getMonth()+1).toString().padStart(2,"0")}-${new Date(event.eventDate).getDate()}`} 
+            value={`${new Date(event.registrationDate).getFullYear()}-${(new Date(event.registrationDate).getMonth()+1).toString().padStart(2,"0")}-${new Date(event.registrationDate).getDate()}`} 
             onChange={(e) => handleDateChange(e.target.value, true, false)}
           />
         </div>

@@ -52,7 +52,7 @@ export function useCreateEvent(client: Program<FoshoProgram>) {
 
       await createEventHandler(eventData.name, eventData.description, eventKey.toBase58())
 
-      return tx
+      return {tx, eventKey: eventKey.toBase58()}
     }
   })
 }

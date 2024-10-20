@@ -3,7 +3,6 @@
 import { useGetEvents } from "@/app/hooks/useGetEvents";
 import { useGetMintData } from "@/app/hooks/useMintData";
 import { ClientContext, ClientContextType } from "@/app/providers/client-provider";
-import { GradientButton } from "@/app/ui/buttons";
 import { bebas } from "@/app/ui/fonts";
 import { FormatBalance } from "@/app/ui/format-balance";
 import { WalletButtonEvent } from "@/app/ui/wallet-button";
@@ -15,6 +14,8 @@ import {BN} from "@coral-xyz/anchor";
 import { format } from "date-fns";
 import { LuCalendarRange } from "react-icons/lu";
 import { HiUsers } from "react-icons/hi";
+import JoinEvent from "./commit";
+import { FaQrcode } from "react-icons/fa";
 
 export default function Event() {
   const params = useParams()
@@ -55,7 +56,11 @@ export default function Event() {
       {
         currentEvent ?
           <div className="text-[#062310]">
-            <GradientButton full={true}>Commit to Event</GradientButton>
+            <JoinEvent eventKey={currentEvent.publicKey} />
+            <div className="mt-4 flex justify-end gap-1 mr-2 cursor-pointer">
+              <FaQrcode className="text-2xl" />
+              <p className="font-semibold">My Ticket</p>
+            </div>
             <div className="flex gap-2 mt-4 text-sm">
               <div className="w-1/2 bg-[#F3FFF5] py-2 px-4 rounded-lg">
                 <p>Cost</p>

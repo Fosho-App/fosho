@@ -46,8 +46,13 @@ export default function CreateEvent() {
   }
 
   async function createEventHandler() {
-    const tx = await mutateAsync(event)
-    setTxLink(tx)
+    setTxLink("")
+    const result = await mutateAsync(event)
+    
+    if (result) {
+      setTxLink(result.tx)
+      router.push(`/community/events/${result.eventKey}`)
+    }
   }
 
   const tokenHoldings = useGetTokensHolding().data
@@ -73,8 +78,8 @@ export default function CreateEvent() {
         setEvent={setEvent} 
         tokens={tokenHoldings ?? []
       }/>
-      <div className="mt-4" onClick={createEventHandler}>
-        <GradientButton full={true}>
+      <div className="mt-4">
+        <GradientButton full={true} onClick={createEventHandler} disabled={isPending}>
           {isPending ? "Creating Event" : "Create Event"}
         </GradientButton>
       </div>

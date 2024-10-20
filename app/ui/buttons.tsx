@@ -27,10 +27,15 @@ export function SecondaryButton({children}: {children: ReactNode}) {
   )
 }
 
-export function GradientButton({children, full} : {children: ReactNode, full?: boolean}) {
+export function GradientButton(
+  {children, disabled, full, onClick} : 
+  {children: ReactNode, disabled?: boolean, full?: boolean, onClick?: () => void}
+) {
   return (
     <button className={`text-white bg-gradient-to-b from-[#73A584] to-[#062310] 
       rounded-2xl py-2 px-4 text-sm font-semibold ${full ? "w-full" : ""}`}
+      disabled={disabled}
+      onClick={onClick}
     >
       {children}
     </button>
