@@ -1,17 +1,15 @@
 
 import { useWallet } from "@solana/wallet-adapter-react"
 import { useMutation } from "@tanstack/react-query"
-import { EventData } from "../community/events/create/page"
+import { EventData } from "../community/[community]/events/create/page"
 import {Program, BN, utils} from "@coral-xyz/anchor"
 import { FoshoProgram } from "../plugin/fosho_program"
-import { communityKey } from "../utils"
 import { useGetCommunity } from "./useCommunity"
 import { PublicKey } from "@solana/web3.js"
-import createEventHandler from "../actions/createEvent"
 
-export function useCreateEvent(client: Program<FoshoProgram>) {
+export function useCreateEvent(client: Program<FoshoProgram>, communityKey: string) {
   const wallet = useWallet()
-  const communityData = useGetCommunity(client).data
+  const communityData = useGetCommunity(client, communityKey).data
 
   return useMutation({
     mutationKey: ["create-event", {publicKey: wallet.publicKey}],
@@ -27,7 +25,7 @@ export function useCreateEvent(client: Program<FoshoProgram>) {
 
       const [eventKey] = PublicKey.findProgramAddressSync([
         Buffer.from("event"),
-        communityKey.toBytes(),
+        new PublicKey(communityKey).toBytes(),
         new BN(communityData.eventsCount).toArrayLike(Buffer, "le", 4)
       ], client.programId)
 
@@ -36,12 +34,47 @@ export function useCreateEvent(client: Program<FoshoProgram>) {
         owner: eventKey
       }) : null
 
+      const { 
+        name, 
+        description, 
+        commitmentFee, 
+        eventEndsAt,
+        eventStartsAt, 
+        registrationEndsAt,
+        registrationStartsAt, 
+        rewardAmount, 
+        location,
+        capacity,
+        organizer
+      } = eventData
+
+      console.log(
+        Date.now(),
+        eventStartsAt,
+        eventEndsAt,
+        registrationStartsAt,
+        registrationEndsAt,
+        eventStartsAt > registrationEndsAt
+      )
+
       const tx = await client.methods.createEvent(
-        eventData.maxAttendees,
-        eventData.commitmentFee,
-        new BN(eventData.eventDate/1000),
-        new BN(eventData.registrationDate/1000),
-        eventData.rewardMint ? eventData.rewardAmount : new BN(0)
+        name,
+        "",
+        { inPerson: {}},
+        organizer,
+        commitmentFee,
+        new BN(eventStartsAt/1000),
+        new BN(eventEndsAt/1000),
+        new BN(registrationStartsAt/1000),
+        new BN(registrationEndsAt/1000),
+        new BN(capacity),
+        location,
+        null,
+        description,
+        { regular: {}},
+        rewardAmount,
+        [],
+        false
       ).accountsPartial({
         community: communityKey,
         tokenProgram: utils.token.TOKEN_PROGRAM_ID,
@@ -49,8 +82,6 @@ export function useCreateEvent(client: Program<FoshoProgram>) {
         rewardMint: eventData.rewardMint,
         senderAccount
       }).rpc()
-
-      await createEventHandler(eventData.name, eventData.description, eventKey.toBase58())
 
       return {tx, eventKey: eventKey.toBase58()}
     }

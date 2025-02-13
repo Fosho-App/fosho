@@ -13,7 +13,7 @@ export default function Home() {
   const router = useRouter()
 
   if (publicKey) {
-    router.push('./profile')
+    router.push('./communities')
   }
 
   return (

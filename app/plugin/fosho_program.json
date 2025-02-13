@@ -1,5 +1,5 @@
 {
-  "address": "DQzCnhf6qTaz2tPPj6jvicntC9hP2tqDzZp1RWKujXdT",
+  "address": "FhtVsW3qx9Qpz3bsbQXsVU1wjfqzw7ee6q1Wv2QQEsS6",
   "metadata": {
     "name": "fosho_program",
     "version": "0.1.0",
@@ -101,7 +101,33 @@
       "accounts": [
         {
           "name": "attendee_record",
-          "writable": true
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  116,
+                  116,
+                  101,
+                  110,
+                  100,
+                  101,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "account",
+                "path": "attendee_record.owner",
+                "account": "Attendee"
+              }
+            ]
+          }
         },
         {
           "name": "event",
@@ -128,10 +154,7 @@
                 "account": "Event"
               }
             ]
-          },
-          "relations": [
-            "attendee_record"
-          ]
+          }
         },
         {
           "name": "community",
@@ -280,6 +303,43 @@
           }
         },
         {
+          "name": "event_collection",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "claimer",
           "writable": true,
           "signer": true
@@ -351,6 +411,10 @@
         {
           "name": "seed",
           "type": "pubkey"
+        },
+        {
+          "name": "community_name",
+          "type": "string"
         }
       ]
     },
@@ -390,6 +454,43 @@
                 "kind": "account",
                 "path": "community.events_count",
                 "account": "Community"
+              }
+            ]
+          }
+        },
+        {
+          "name": "event_collection",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
               }
             ]
           }
@@ -559,30 +660,106 @@
         {
           "name": "system_program",
           "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "mpl_core_program",
+          "address": "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d"
         }
       ],
       "args": [
         {
-          "name": "max_attendees",
-          "type": "u32"
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "uri",
+          "type": "string"
+        },
+        {
+          "name": "event_type",
+          "type": {
+            "defined": {
+              "name": "EventType"
+            }
+          }
+        },
+        {
+          "name": "organizer",
+          "type": "string"
         },
         {
           "name": "commitment_fee",
           "type": "u64"
         },
         {
-          "name": "event_start_time",
-          "type": "i64"
-        },
-        {
-          "name": "registration_end_time",
+          "name": "event_starts_at",
           "type": {
             "option": "i64"
           }
         },
         {
+          "name": "event_ends_at",
+          "type": {
+            "option": "i64"
+          }
+        },
+        {
+          "name": "registration_starts_at",
+          "type": {
+            "option": "i64"
+          }
+        },
+        {
+          "name": "registration_ends_at",
+          "type": {
+            "option": "i64"
+          }
+        },
+        {
+          "name": "capacity",
+          "type": {
+            "option": "u64"
+          }
+        },
+        {
+          "name": "location",
+          "type": {
+            "option": "string"
+          }
+        },
+        {
+          "name": "virtual_link",
+          "type": {
+            "option": "string"
+          }
+        },
+        {
+          "name": "description",
+          "type": {
+            "option": "string"
+          }
+        },
+        {
+          "name": "event_version",
+          "type": {
+            "defined": {
+              "name": "EventVersion"
+            }
+          }
+        },
+        {
           "name": "reward_per_user",
           "type": "u64"
+        },
+        {
+          "name": "event_authorities",
+          "type": {
+            "vec": "pubkey"
+          }
+        },
+        {
+          "name": "authority_must_sign",
+          "type": "bool"
         }
       ]
     },
@@ -657,33 +834,172 @@
           }
         },
         {
+          "name": "community",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  109,
+                  117,
+                  110,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "community.seed",
+                "account": "Community"
+              }
+            ]
+          }
+        },
+        {
+          "name": "event_collection",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "event_authority",
+          "docs": [
+            "if it exists they would have to sign this transaction"
+          ]
+        },
+        {
           "name": "attendee",
           "writable": true,
           "signer": true
         },
         {
+          "name": "ticket",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "account",
+                "path": "attendee"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  105,
+                  99,
+                  107,
+                  101,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "system_program",
           "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "mpl_core_program",
+          "address": "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d"
+        },
+        {
+          "name": "token_program"
         }
       ],
       "args": []
     },
     {
-      "name": "verify_attendee",
+      "name": "reject_attendee",
       "discriminator": [
-        135,
-        180,
-        176,
-        53,
-        172,
-        153,
-        216,
-        151
+        107,
+        232,
+        196,
+        121,
+        206,
+        17,
+        60,
+        101
       ],
       "accounts": [
         {
           "name": "attendee_record",
-          "writable": true
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  116,
+                  116,
+                  101,
+                  110,
+                  100,
+                  101,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "account",
+                "path": "attendee_record.owner",
+                "account": "Attendee"
+              }
+            ]
+          }
         },
         {
           "name": "event",
@@ -744,11 +1060,290 @@
           ]
         },
         {
-          "name": "authority",
-          "signer": true,
+          "name": "event_collection",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "ticket",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "account",
+                "path": "attendee_record.owner",
+                "account": "Attendee"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  105,
+                  99,
+                  107,
+                  101,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "owner"
+        },
+        {
+          "name": "event_authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mpl_core_program",
+          "address": "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "verify_attendee",
+      "discriminator": [
+        135,
+        180,
+        176,
+        53,
+        172,
+        153,
+        216,
+        151
+      ],
+      "accounts": [
+        {
+          "name": "attendee_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  116,
+                  116,
+                  101,
+                  110,
+                  100,
+                  101,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "account",
+                "path": "attendee_record.owner",
+                "account": "Attendee"
+              }
+            ]
+          }
+        },
+        {
+          "name": "event",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "community"
+              },
+              {
+                "kind": "account",
+                "path": "event.nonce",
+                "account": "Event"
+              }
+            ]
+          },
           "relations": [
-            "community"
+            "attendee_record"
           ]
+        },
+        {
+          "name": "community",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  109,
+                  117,
+                  110,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "community.seed",
+                "account": "Community"
+              }
+            ]
+          },
+          "relations": [
+            "event"
+          ]
+        },
+        {
+          "name": "event_collection",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "ticket",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "account",
+                "path": "attendee_record.owner",
+                "account": "Attendee"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  105,
+                  99,
+                  107,
+                  101,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "owner"
+        },
+        {
+          "name": "event_authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mpl_core_program",
+          "address": "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d"
         }
       ],
       "args": []
@@ -766,6 +1361,32 @@
         165,
         51,
         65
+      ]
+    },
+    {
+      "name": "BaseAssetV1",
+      "discriminator": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "BaseCollectionV1",
+      "discriminator": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ]
     },
     {
@@ -813,28 +1434,138 @@
     },
     {
       "code": 6003,
-      "name": "RegistrationTimeExpired",
-      "msg": "Registration time has been expired"
+      "name": "RegistrationNotStarted",
+      "msg": "The registration period has not started yet"
     },
     {
       "code": 6004,
-      "name": "MaxAttendeesAlreadyJoined",
-      "msg": "The maximum allowed attendees have already joined"
+      "name": "RegistrationEnded",
+      "msg": "The registration period has ended"
     },
     {
       "code": 6005,
+      "name": "MaximumTicketsReached",
+      "msg": "The maximum number of tickets has been reached"
+    },
+    {
+      "code": 6006,
       "name": "AttendeeStatusPending",
       "msg": "The rewards cannot be claimed during the pending status"
     },
     {
-      "code": 6006,
+      "code": 6007,
       "name": "InvalidClaimer",
       "msg": "Not a valid claimer"
     },
     {
-      "code": 6007,
+      "code": 6008,
       "name": "AccountNotProvided",
       "msg": "One of the accounts required for this ix is not provided"
+    },
+    {
+      "code": 6009,
+      "name": "AlreadyClaimed",
+      "msg": "this attendee has already claimed the rewards"
+    },
+    {
+      "code": 6010,
+      "name": "MissingAttribute",
+      "msg": "The attribute is missing"
+    },
+    {
+      "code": 6011,
+      "name": "NumericalOverflow",
+      "msg": "Numerical Overflow"
+    },
+    {
+      "code": 6012,
+      "name": "EventAuthorityMustSign",
+      "msg": "Event Authority must sign"
+    },
+    {
+      "code": 6013,
+      "name": "InvalidEventAuthority",
+      "msg": "Event Authority Publickey mismatch"
+    },
+    {
+      "code": 6014,
+      "name": "AlreadyScanned",
+      "msg": "Ticket has been signed already"
+    },
+    {
+      "code": 6015,
+      "name": "EventCancelled",
+      "msg": "Event is cancelled"
+    },
+    {
+      "code": 6016,
+      "name": "EventHasNotEnded",
+      "msg": "Event has not ended"
+    },
+    {
+      "code": 6017,
+      "name": "EventHasNotStarted",
+      "msg": "Event has not started"
+    },
+    {
+      "code": 6018,
+      "name": "EventEnded",
+      "msg": "Event has ended"
+    },
+    {
+      "code": 6019,
+      "name": "InvalidCollection",
+      "msg": "Invalid Collection"
+    },
+    {
+      "code": 6020,
+      "name": "InvalidCollectionDetails",
+      "msg": "Invalid Collection Details"
+    },
+    {
+      "code": 6021,
+      "name": "NftNotVerified",
+      "msg": "Nft Not Verified"
+    },
+    {
+      "code": 6022,
+      "name": "CollectionMissing",
+      "msg": "Collection Key is Missing"
+    },
+    {
+      "code": 6023,
+      "name": "VerifiedCreatorMissing",
+      "msg": "A verified creator is missing"
+    },
+    {
+      "code": 6024,
+      "name": "InvalidCreator",
+      "msg": "Invalid nft creator"
+    },
+    {
+      "code": 6025,
+      "name": "NoCreatorsPresentOnMetadata",
+      "msg": "No creators on metadata"
+    },
+    {
+      "code": 6026,
+      "name": "PublicKeyMismatch",
+      "msg": "Public Key mismatch"
+    },
+    {
+      "code": 6027,
+      "name": "WrongAccountOwner",
+      "msg": "Incorrect account owner"
+    },
+    {
+      "code": 6028,
+      "name": "NotEnoughRemainingAccounts",
+      "msg": "Not enough remaining accounts provided"
+    },
+    {
+      "code": 6029,
+      "name": "InvalidTokenDetails",
+      "msg": "User may not have enough tokens or incorrect data has been supplied"
     }
   ],
   "types": [
@@ -879,6 +1610,87 @@
           },
           {
             "name": "Rejected"
+          },
+          {
+            "name": "Claimed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BaseAssetV1",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "key",
+            "type": {
+              "defined": {
+                "name": "Key"
+              }
+            }
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "update_authority",
+            "type": {
+              "defined": {
+                "name": "UpdateAuthority"
+              }
+            }
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "uri",
+            "type": "string"
+          },
+          {
+            "name": "seq",
+            "type": {
+              "option": "u64"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "BaseCollectionV1",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "key",
+            "type": {
+              "defined": {
+                "name": "Key"
+              }
+            }
+          },
+          {
+            "name": "update_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "uri",
+            "type": "string"
+          },
+          {
+            "name": "num_minted",
+            "type": "u32"
+          },
+          {
+            "name": "current_size",
+            "type": "u32"
           }
         ]
       }
@@ -903,6 +1715,10 @@
           {
             "name": "bump",
             "type": "u8"
+          },
+          {
+            "name": "name",
+            "type": "string"
           }
         ]
       }
@@ -923,24 +1739,25 @@
             }
           },
           {
+            "name": "event_version",
+            "type": {
+              "defined": {
+                "name": "EventVersion"
+              }
+            }
+          },
+          {
+            "name": "event_authorities",
+            "docs": [
+              "4 event authorities are allowed."
+            ],
+            "type": {
+              "vec": "pubkey"
+            }
+          },
+          {
             "name": "commitment_fee",
             "type": "u64"
-          },
-          {
-            "name": "event_start_time",
-            "type": "i64"
-          },
-          {
-            "name": "max_attendees",
-            "type": "u32"
-          },
-          {
-            "name": "registration_end_time",
-            "type": "i64"
-          },
-          {
-            "name": "current_attendees",
-            "type": "u32"
           },
           {
             "name": "bump",
@@ -957,6 +1774,187 @@
           {
             "name": "is_cancelled",
             "type": "bool"
+          },
+          {
+            "name": "authority_must_sign",
+            "docs": [
+              "in all cases, event authority must sign the attendance.",
+              "if this is true. event authority must sign the join event instruction."
+            ],
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EventType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "InPerson"
+          },
+          {
+            "name": "Virtual"
+          },
+          {
+            "name": "Exhibition"
+          },
+          {
+            "name": "Conference"
+          },
+          {
+            "name": "Concert"
+          },
+          {
+            "name": "SportingEvent"
+          },
+          {
+            "name": "Workshop"
+          },
+          {
+            "name": "Webinar"
+          },
+          {
+            "name": "NetworkingEvent"
+          },
+          {
+            "name": "Other",
+            "fields": [
+              "string"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "EventVersion",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Regular"
+          },
+          {
+            "name": "NftGated",
+            "fields": [
+              {
+                "defined": {
+                  "name": "NftData"
+                }
+              }
+            ]
+          },
+          {
+            "name": "TokenGated",
+            "fields": [
+              {
+                "defined": {
+                  "name": "TokenData"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Key",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Uninitialized"
+          },
+          {
+            "name": "AssetV1"
+          },
+          {
+            "name": "HashedAssetV1"
+          },
+          {
+            "name": "PluginHeaderV1"
+          },
+          {
+            "name": "PluginRegistryV1"
+          },
+          {
+            "name": "CollectionV1"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NftData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "collection_mint",
+            "docs": [
+              "mpl token metadata collection"
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "verified_creator",
+            "docs": [
+              "mpl token metadata verified creator pubkey"
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "TokenData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "mint",
+            "docs": [
+              "token mint of the token that must be held by the owner"
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "minimum_amount",
+            "docs": [
+              "minimum amount held by the owner"
+            ],
+            "type": {
+              "option": "u64"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "UpdateAuthority",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "None"
+          },
+          {
+            "name": "Address",
+            "fields": [
+              "pubkey"
+            ]
+          },
+          {
+            "name": "Collection",
+            "fields": [
+              "pubkey"
+            ]
           }
         ]
       }

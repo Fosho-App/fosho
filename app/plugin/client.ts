@@ -4,11 +4,53 @@ import idl from "./fosho_program.json";
 import {FoshoProgram} from "./fosho_program";
 import { AnchorWallet } from "@solana/wallet-adapter-react";
 import { IdlTypes } from "@coral-xyz/anchor";
+import { fetchCollectionV1 } from "@metaplex-foundation/mpl-core"
+import { Umi, publicKey } from "@metaplex-foundation/umi";
 
 // const programId = new PublicKey("5ojhS89XpkvrSyagCddG7fv4wh2ffx8kVA6ABDYttZdN");
 type CommunityInfo = IdlTypes<FoshoProgram>["community"];
+type AttendeeInfoWoKey = IdlTypes<FoshoProgram>["attendee"];
+export interface AttendeeInfo extends AttendeeInfoWoKey { publicKey: PublicKey};
 type EventInfoWoPubkey = IdlTypes<FoshoProgram>["event"];
-export interface EventInfo extends EventInfoWoPubkey { publicKey: PublicKey};
+
+export interface EventInfo extends EventInfoWoPubkey { 
+  publicKey: PublicKey
+  name: string
+  eventType: string | null
+  organizer: string
+  eventStartsAt: number | null
+  eventEndsAt: number | null
+  registrationStartsAt: number | null
+  registrationEndsAt: number | null
+  capacity: number | null
+  current: number
+  location: string | null
+  virtualLink: string | null
+  description: string | null
+};
+
+const defaultValues = {
+  organizer: "",
+  name: "",
+  eventType: "",
+  eventStartsAt: null,
+  eventEndsAt: null,
+  registrationStartsAt: null,
+  registrationEndsAt: null,
+  capacity: null,
+  current: 0,
+  location: null,
+  virtualLink: null,
+  description: null
+}
+
+function getEventCollectionKey(event: PublicKey) {
+  return PublicKey.findProgramAddressSync([
+    Buffer.from("event"),
+    event.toBuffer(),
+    Buffer.from("collection")
+  ], new PublicKey(idl.address))
+}
 
 export function createClient(connection: Connection, wallet: AnchorWallet) {
   const provider = new AnchorProvider(connection, wallet, {})
@@ -21,6 +63,7 @@ export function createClient(connection: Connection, wallet: AnchorWallet) {
 
 export async function getEvents(
   program: Program<FoshoProgram>,
+  umi: Umi,
   community: PublicKey,
   communityData: CommunityInfo
 ) {
@@ -36,9 +79,36 @@ export async function getEvents(
     );
 
     const event = await program.account.event.fetch(eventKey)
-    events.push({...event, publicKey: eventKey})
+    const [nftKey] = getEventCollectionKey(eventKey)
+    const coreData = await fetchCollectionV1(umi, publicKey(nftKey))
+    
+    const eventWithDefaults: EventInfo = {...event, ...defaultValues, publicKey: eventKey}
+
+    if (coreData.attributes) {
+      let attributes = coreData.attributes.attributeList
+        .map(k => ({...k, key: k.key.replace(/\s/g, '')}))
+      
+      attributes = attributes.map(att => ({...att, key: att.key[0].toLowerCase()+att.key.slice(1)}))
+      
+      for (const attribute of attributes) {
+        eventWithDefaults.eventType = attribute.key === "eventType" ? attribute.value : eventWithDefaults.eventType
+        eventWithDefaults.organizer = attribute.key === "organizer" ? attribute.value : eventWithDefaults.organizer
+        eventWithDefaults.eventStartsAt = attribute.key === "eventStartsAt" ? parseInt(attribute.value) * 1000 : eventWithDefaults.eventStartsAt
+        eventWithDefaults.eventEndsAt = attribute.key === "eventEndsAt" ? parseInt(attribute.value) * 1000 : eventWithDefaults.eventEndsAt
+        eventWithDefaults.registrationEndsAt = attribute.key === "registrationEndsAt" ? parseInt(attribute.value) * 1000 : eventWithDefaults.registrationEndsAt
+        eventWithDefaults.registrationStartsAt = attribute.key === "registrationStartsAt" ? parseInt(attribute.value) * 1000 : eventWithDefaults.registrationStartsAt
+        eventWithDefaults.capacity = attribute.key === "capacity" ? parseInt(attribute.value) : eventWithDefaults.capacity
+        eventWithDefaults.location = attribute.key === "location" ? attribute.value : eventWithDefaults.location
+        eventWithDefaults.virtualLink = attribute.key === "virtualLink" ? attribute.value : eventWithDefaults.virtualLink
+        eventWithDefaults.description = attribute.key === "description" ? attribute.value : eventWithDefaults.description
+      }
+    }
+    
+    eventWithDefaults.name = coreData.name
+    eventWithDefaults.current = coreData.numMinted
+    events.push(eventWithDefaults)
   }
 
-  return events
+  return events.sort((a,b) => a.eventStartsAt && b.eventStartsAt ? b.eventStartsAt - a.eventStartsAt : -1)
 
 }

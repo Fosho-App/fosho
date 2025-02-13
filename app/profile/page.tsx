@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { bebas, inter } from "../ui/fonts";
-import Logo from "../ui/logo";
 import ProfileForm from "../ui/profile/form";
-import { WalletButtonProfile } from "../ui/wallet-button";
 import { IoMdFastforward } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import { useGetProfileData } from "../hooks/useProfileData";
 import { useUpdateProfile } from "../hooks/useUpdateProfile";
+import MainNav from "../ui/navs/main-nav";
+import { BebasH2Heading } from "../ui/heading";
 
 export type ProfileData = {
   name: string | null,
@@ -45,14 +45,11 @@ export default function Profile() {
 
   return (
     <div className={`${inter.className} max-w-[480px] m-auto`}>
-      <div className="flex justify-between m-2 items-center">
-        <Logo />
-        <WalletButtonProfile />
-      </div>
+      <MainNav />
       <div className="my-4 flex items-center gap-2 ml-2 text-lg cursor-pointer" onClick={continueToEvents}>
         Continue to Events <IoMdFastforward />
       </div>
-      <h2 className={`${bebas.className} text-center text-xl mt-2`}>Update Profile</h2>
+      <BebasH2Heading title="Update Profile" />
       <ProfileForm isPending={isPending} profile={profile} setProfile={setProfile} updateProfile={updateProfile} />
       {
         isError && 
