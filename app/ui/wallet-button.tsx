@@ -31,7 +31,7 @@ export function WalletButtonProfile() {
         background: "transparent", 
         color: "#9A9A9A", 
         fontWeight: 400, 
-        fontSize: "12px",
+        fontSize: "13px",
         border: "1px solid #414141",
       }}>
         {publicKey? ellipsify(publicKey.toBase58()) : "Connect Wallet"}

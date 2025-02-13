@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { bebas, inter } from "../ui/fonts";
+import { inter } from "../ui/fonts";
 import ProfileForm from "../ui/profile/form";
 import { IoMdFastforward } from "react-icons/io";
 import { useRouter } from "next/navigation";

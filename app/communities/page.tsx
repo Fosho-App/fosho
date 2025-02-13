@@ -32,7 +32,7 @@ export default function Communities() {
             >
               <img 
                 src="/images/communities/islanddao.png" 
-                alt={community.account.name}
+                alt={community.name}
                 className="rounded-md cursor-pointer"
               />
             </div>
