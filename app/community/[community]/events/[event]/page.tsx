@@ -62,28 +62,30 @@ export default function Event() {
       <div className="text-white">
         {currentEvent ?
           attendeeRecord === null ?
-            currentEvent.eventEndsAt && currentEvent.eventEndsAt < Date.now()/1000 ?
-              <div className="w-full text-center">
-                <EventOver eventOverType={EventOverType.CommitOver} />
-              </div> :
-              <JoinEvent 
-                eventKey={currentEvent.publicKey} 
-                communityKey={new PublicKey(communityKey)} 
-              /> :
+            publicKey && !community?.authority.equals(publicKey) ?
+              currentEvent.eventEndsAt && currentEvent.eventEndsAt < Date.now() ?
+                <div className="w-full text-center">
+                  <EventOver eventOverType={EventOverType.CommitOver} />
+                </div> :
+                <JoinEvent 
+                  eventKey={currentEvent.publicKey} 
+                  communityKey={new PublicKey(communityKey)} 
+                /> :
+              null :
           attendeeRecord === undefined ?
             "" :
-          attendeeRecord.status.verified ?
+          attendeeRecord?.status.verified ?
             <ClaimRewards 
               event={currentEvent}
               communityKey={new PublicKey(communityKey)} 
               mintData={mintData} 
               attendeeRecordKey={attendeeRecord.publicKey}
             /> :
-          attendeeRecord.status.pending && currentEvent.eventEndsAt && currentEvent.eventEndsAt > Date.now() ?
+          attendeeRecord?.status.pending && currentEvent.eventEndsAt && currentEvent.eventEndsAt > Date.now() ?
             <Ticket attendee={attendeeRecord} organizer={currentEvent.organizer} /> :
-          attendeeRecord.status.rejected ?
-              <EventOver eventOverType={EventOverType.Rejected} /> :
-              <EventOver eventOverType={EventOverType.ClaimOver} /> :
+          attendeeRecord?.status.rejected ?
+            <EventOver eventOverType={EventOverType.Rejected} /> :
+            <EventOver eventOverType={EventOverType.ClaimOver} /> :
         null}
         {publicKey && community?.authority.equals(publicKey) ?
           <div className="w-full mt-4">
