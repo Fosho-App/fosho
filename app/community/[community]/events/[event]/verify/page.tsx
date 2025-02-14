@@ -8,7 +8,7 @@ import { VerifyButton } from '@/app/ui/buttons';
 import { inter } from '@/app/ui/fonts';
 import { ellipsify } from '@/app/utils';
 import { PublicKey } from '@solana/web3.js';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import QrScanner from 'qr-scanner';
 import { useContext, useEffect, useRef, useState } from "react";
 import { IoChevronBack } from 'react-icons/io5';
@@ -19,8 +19,11 @@ export default function VerifyUser() {
   const qrBoxEl = useRef<HTMLDivElement>(null);
 
   const { event, community } = useParams()
+  const searchParams = useSearchParams()
+  const attendeeKeyFromParams = searchParams.get("user")
+
   const router = useRouter()
-  const [attendeeKey, setAttendeeKey] = useState<string>("");
+  const [attendeeKey, setAttendeeKey] = useState<string>(attendeeKeyFromParams ?? "");
   const [errorMsg, setError] = useState("")
 
   const {client, umi} = useContext(ClientContext) as ClientContextType
@@ -107,10 +110,6 @@ export default function VerifyUser() {
                     <div className="text-green-600">This user is already verified</div> :
                     <div className="text-red-600">This user is already rejected</div>
                   }
-                  <div className="flex justify-center items-center gap-1" onClick={backToEvent}>
-                    <IoChevronBack />
-                    Back to Event
-                  </div>
                 </div> 
               }  
             </div> : ""}
@@ -120,6 +119,10 @@ export default function VerifyUser() {
           <div ref={qrBoxEl} className="h-96"></div>
         </div>
       }
+      <div className="flex justify-center items-center gap-1 mt-8" onClick={backToEvent}>
+        <IoChevronBack />
+        Back to Event
+      </div>
     </div>
   );
 }

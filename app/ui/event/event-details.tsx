@@ -9,10 +9,15 @@ import { FaRegUser } from "react-icons/fa";
 import { HiUsers } from "react-icons/hi";
 import { bebas } from "../fonts";
 import { BN } from "@coral-xyz/anchor";
+import { CiViewList } from "react-icons/ci";
 
 export default function EventDetails(
-  {event, mintData} : 
-  {event: EventInfo, mintData: MintInfoType | null | undefined}
+  {event, mintData, viewAttendees} : 
+  {
+    event: EventInfo, 
+    mintData: MintInfoType | null | undefined,
+    viewAttendees: () => void
+  }
 ) {
   return (
     <div className="">
@@ -68,7 +73,13 @@ export default function EventDetails(
         <div className="flex items-center gap-2">
           <HiUsers className="text-fosho-red text-xl"/>
           <p className="text-sm font-medium">
-            {event.capacity ? event.capacity : 'Unlimited'} Attendees
+            {event.capacity ? event.capacity : 'Unlimited'} Attendees ({event.current} registered)
+          </p>
+        </div>
+        <div className="flex items-center gap-2" onClick={viewAttendees}>
+          <CiViewList className="text-fosho-red text-xl"/>
+          <p className="text-sm font-semibold">
+            View Attendees
           </p>
         </div>
       </div>

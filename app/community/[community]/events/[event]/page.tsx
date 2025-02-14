@@ -1,6 +1,6 @@
 'use client'
 
-import { useGetEvents } from "@/app/hooks/useGetEvents";
+import { useGetEvent, useGetEvents } from "@/app/hooks/useGetEvents";
 import { ClientContext, ClientContextType } from "@/app/providers/client-provider";
 import { bebas } from "@/app/ui/fonts";
 import { PublicKey } from "@solana/web3.js";
@@ -27,10 +27,9 @@ export default function Event() {
   const event = typeof params.event === "string" ? params.event : ""
 
   const {client, umi} = useContext(ClientContext) as ClientContextType
-  const events = useGetEvents(client, umi, communityKey).data
+  const currentEvent = useGetEvent(client, umi, event).data
   const community = useGetCommunity(client, communityKey).data
 
-  const currentEvent = events ? events.find(e => e.publicKey.toBase58() === event) : null
   const attendeeRecord = useGetAttendee(client, currentEvent?.publicKey).data
   const mintData = useGetMintData(currentEvent?.rewardMint?.toBase58()).data
 
@@ -40,6 +39,10 @@ export default function Event() {
 
   function verifyUsers() {
     router.push(`/community/${communityKey}/events/${event}/verify`)
+  }
+
+  function viewAttendees() {
+    router.push(`/community/${communityKey}/events/${event}/attendees`)
   }
   
   return (
@@ -94,7 +97,7 @@ export default function Event() {
           ""
         }
         {currentEvent ? 
-          <EventDetails event={currentEvent} mintData={mintData}/> : 
+          <EventDetails event={currentEvent} mintData={mintData} viewAttendees={viewAttendees}/> : 
           ""
         }
       </div> 

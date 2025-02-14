@@ -8,7 +8,7 @@ import { useGetMintData } from "@/app/hooks/useMintData";
 import { FormatBalance } from "../format-balance";
 import { EventInfo } from "@/app/plugin/client";
 
-export default function IslandDaoEvent(
+export default function BriefEvent(
   {event, onClick}: {event: EventInfo, onClick: (s: string) => void}
 ) {
   const mintData = useGetMintData(event.rewardMint?.toBase58()).data
@@ -28,7 +28,7 @@ export default function IslandDaoEvent(
           </p>
           <h3 className="text-white font-semibold">{event.name}</h3>
           <p className="text-secondary-text text-sm font-medium">
-            Limit: {event.current}/{event.capacity ? event.capacity : 'Unlimited'} People Joined
+            Limit: {event.current}/{event.capacity ? `${event.capacity} Attendees Joined` : 'Unlimited Attendees'}
           </p>
           <div className="flex gap-2 mt-2">
             <div className="w-1/2 bg-background-second py-2 px-4 rounded-lg">

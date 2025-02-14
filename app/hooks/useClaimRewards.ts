@@ -4,7 +4,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import {Program, utils} from "@coral-xyz/anchor"
 import { FoshoProgram } from "../plugin/fosho_program"
 import { PublicKey } from "@solana/web3.js"
-import { communityKey } from "../utils"
 import { TOKEN_PROGRAM_ID } from "@coral-xyz/anchor/dist/cjs/utils/token"
 
 export function useClaimRewards(
@@ -42,7 +41,7 @@ export function useClaimRewards(
     },
     onSuccess: async() => {
       await queryClient.invalidateQueries({
-          queryKey: ['get-events', {community: communityKey}]
+          queryKey: ['get-events', {community: community.toBase58()}]
       })     
     }
   })

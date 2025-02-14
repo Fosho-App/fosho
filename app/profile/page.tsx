@@ -34,7 +34,7 @@ export default function Profile() {
   }
 
   function continueToEvents() {
-    router.push("/community/events");
+    router.push("/communities");
   }
 
   useEffect(() => {

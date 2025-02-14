@@ -66,7 +66,7 @@ export default function CreateEvent() {
   });
 
   function backToEvents() {
-    router.push("/community/events")
+    router.push(`/community/${params.community}`)
   }
 
   async function createEventHandler() {

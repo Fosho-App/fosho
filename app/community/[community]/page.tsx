@@ -5,7 +5,7 @@ import { useGetEvents } from "@/app/hooks/useGetEvents"
 import { ClientContext, ClientContextType } from "@/app/providers/client-provider"
 import { DefaultButton } from "@/app/ui/buttons"
 import EventHeader from "@/app/ui/events/header"
-import IslandDaoEvent from "@/app/ui/events/island-dao"
+import BriefEvent from "@/app/ui/events/island-dao"
 import SocialLinks from "@/app/ui/events/socials"
 import FooterNav from "@/app/ui/navs/footer-nav"
 import MainNav from "@/app/ui/navs/main-nav"
@@ -53,7 +53,7 @@ export default function Events() {
               events.isFetched && events.data ?
                 events.data.map((event) => (
                   <div key={event.nonce}>
-                    <IslandDaoEvent event={event} onClick={onClick}/>
+                    <BriefEvent event={event} onClick={onClick}/>
                   </div>
                 )) :
               "Fetch Failed. Please refresh"

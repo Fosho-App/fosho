@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import {Program} from "@coral-xyz/anchor"
 import { FoshoProgram } from "../plugin/fosho_program"
 import { PublicKey } from "@solana/web3.js"
-import { communityKey, mplCoreProgramKey } from "../utils"
+import { mplCoreProgramKey } from "../utils"
 import { TOKEN_PROGRAM_ID } from "@coral-xyz/anchor/dist/cjs/utils/token"
 
 export function useJoinEvent(client: Program<FoshoProgram>, community: PublicKey, event: PublicKey) {
@@ -32,7 +32,7 @@ export function useJoinEvent(client: Program<FoshoProgram>, community: PublicKey
     },
     onSuccess: async() => {
       await queryClient.invalidateQueries({
-          queryKey: ['get-events', {community: communityKey}]
+          queryKey: ['get-events', {community: community.toBase58()}]
       })     
     }
   })

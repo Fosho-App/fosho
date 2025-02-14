@@ -24,6 +24,4 @@ export function removeZeros(numString: string) {
   return numArray.reverse().join("")
 }
 
-
-export const communityKey = new PublicKey("37DbFFh5pAZC9eUfDuWqE4eSi8YsjHcSa7WNFUAYCf3V")
 export const mplCoreProgramKey = new PublicKey("CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d")

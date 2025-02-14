@@ -55,3 +55,58 @@ export function useGetOtherAttendee(client: Program<FoshoProgram>, attendeeKey?:
     staleTime: Infinity
   })
 }
+
+export function useGetAttendeesForEvent(client: Program<FoshoProgram>, event: string) {
+  return useQuery({
+    queryKey: ['get-attendees-for-event', {event}],
+    queryFn: async() => {
+      try {
+        const attendeeRecords = await client.account.attendee.all([{
+          memcmp: {
+            offset: 8,
+            bytes: event
+          }
+        }])
+
+        console.log("Fetched attendee records for event: ", event)
+        return attendeeRecords.map(record => ({...record.account, publicKey: record.publicKey}))
+      } catch(e) {
+        console.log(e)
+        return null
+      }
+    },
+    refetchOnWindowFocus: false,
+    staleTime: Infinity
+  })
+}
+
+export function useGetAttendeesForUser(client: Program<FoshoProgram>) {
+  const {publicKey} = useWallet()
+  const user = publicKey?.toBase58()
+
+  return useQuery({
+    queryKey: ['get-attendees-for-event', {user}],
+    queryFn: async() => {
+      if (!user) {
+        return null
+      }
+      
+      try {
+        const attendeeRecords = await client.account.attendee.all([{
+          memcmp: {
+            offset: 40,
+            bytes: user
+          }
+        }])
+
+        console.log("Fetched attendee records for user: ", user)
+        return attendeeRecords.map(record => ({...record.account, publicKey: record.publicKey}))
+      } catch(e) {
+        console.log(e)
+        return null
+      }
+    },
+    refetchOnWindowFocus: false,
+    staleTime: Infinity
+  })
+}
