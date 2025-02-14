@@ -110,3 +110,23 @@ export function useGetAttendeesForUser(client: Program<FoshoProgram>) {
     staleTime: Infinity
   })
 }
+
+export function useGetPendingAttendeesForUser(client: Program<FoshoProgram>) {
+  const {publicKey} = useWallet()
+  const user = publicKey?.toBase58()
+  const attendeesForUser = useGetAttendeesForUser(client).data
+
+  return useQuery({
+    enabled: attendeesForUser !== undefined,
+    queryKey: ['get-pending-attendees-for-user', {user}],
+    queryFn: async() => {
+      if (!user || !attendeesForUser) {
+        return null
+      }
+
+      return attendeesForUser.filter(attendee => attendee.status.verified)
+    },
+    refetchOnWindowFocus: false,
+    staleTime: Infinity
+  })
+}

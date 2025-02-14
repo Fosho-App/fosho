@@ -1,6 +1,7 @@
 'use client'
 
 import { useGetCommunity } from "@/app/hooks/useCommunity"
+import { useGetPendingAttendeesForUser } from "@/app/hooks/useGetAttendee"
 import { useGetEvents } from "@/app/hooks/useGetEvents"
 import { ClientContext, ClientContextType } from "@/app/providers/client-provider"
 import { DefaultButton } from "@/app/ui/buttons"
@@ -20,9 +21,10 @@ export default function Events() {
   const {client, umi} = useContext(ClientContext) as ClientContextType
 
   const communityKey = typeof params.community === "string" ? params.community : ""
-
+  
   const community = useGetCommunity(client, communityKey).data
   const events = useGetEvents(client, umi, communityKey)
+  const pendingAttendeesForUser = useGetPendingAttendeesForUser(client).data
 
   function onClick(key: string) {
     router.push(`/community/${communityKey}/events/${key}`)
@@ -35,7 +37,7 @@ export default function Events() {
         <EventHeader />
         <div className="mt-4 flex justify-between items-center px-2">
           <SocialLinks />
-          <DefaultButton>Claim Rewards</DefaultButton>
+          {pendingAttendeesForUser?.length ? <DefaultButton>Claim Rewards</DefaultButton> : null}
         </div>
         {
           publicKey && community?.authority.equals(publicKey) ?
