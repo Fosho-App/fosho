@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { inter } from "./fonts";
 
 export function DefaultButton(
   {children, onClick, disabled, full}: 
@@ -18,7 +19,8 @@ export function DefaultButton(
 
 export function VerifyButton(
   {children, onClick, color, disabled, full}: 
-  {children: ReactNode, color: string, disabled?: boolean, full?: boolean, onClick?: () => void}) 
+  {children: ReactNode, color: string, disabled?: boolean, full?: boolean, onClick?: () => void}
+) 
 {
   return (
     <button className={`
@@ -43,17 +45,18 @@ export function SecondaryButton({children}: {children: ReactNode}) {
   )
 }
 
-export function GradientButton(
-  {children, disabled, full, onClick} : 
-  {children: ReactNode, disabled?: boolean, full?: boolean, onClick?: () => void}
+export function EventButton(
+  {children, onClick, selected }: 
+  {children: ReactNode, selected: boolean, onClick?: () => void}
 ) {
   return (
-    <button className={`text-white bg-gradient-to-b from-[#73A584] to-[#062310] 
-      rounded-2xl py-2 px-4 text-sm font-semibold ${full ? "w-full" : ""}`}
-      disabled={disabled}
-      onClick={onClick}
+    <div className={`
+      ${selected ? 'bg-background-second text-white' : 'bg-background-main text-[#818181]'} 
+      rounded-md ${inter.className} text-sm py-1 px-4 cursor-pointer text-white`
+    }
     >
       {children}
-    </button>
+    </div>
   )
 }
+

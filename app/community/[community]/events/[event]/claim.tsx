@@ -4,10 +4,10 @@ import { bebas } from "@/app/ui/fonts";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { BN } from "@coral-xyz/anchor";
 import { FormatBalance } from "@/app/ui/format-balance";
-import { GradientButton } from "@/app/ui/buttons";
 import { useClaimRewards } from "@/app/hooks/useClaimRewards";
 import { useContext } from "react";
 import { ClientContext, ClientContextType } from "@/app/providers/client-provider";
+import { DefaultButton } from "@/app/ui/buttons";
 
 export default function ClaimRewards(
   {event, communityKey, mintData, attendeeRecordKey} : 
@@ -42,13 +42,13 @@ export default function ClaimRewards(
               name={mintData?.name} 
           /> + </span> : ""} {event.commitmentFee.toNumber()/LAMPORTS_PER_SOL} SOL
       </h2>
-      <GradientButton full={true} disabled={isPending || isSuccess} onClick={claimRewards}>
+      <DefaultButton full={true} disabled={isPending || isSuccess} onClick={claimRewards}>
         {
           isPending ? "Claiming" : 
           isSuccess ? "Claimed Successfully" :
           "Claim Rewards"
         }
-      </GradientButton>
+      </DefaultButton>
       {
         isError && 
         <div className="text-sm my-2 text-center text-red-500">

@@ -4,7 +4,7 @@ import { useGetCommunity } from "@/app/hooks/useCommunity"
 import { useGetPendingAttendeesForUser } from "@/app/hooks/useGetAttendee"
 import { useGetEvents } from "@/app/hooks/useGetEvents"
 import { ClientContext, ClientContextType } from "@/app/providers/client-provider"
-import { DefaultButton } from "@/app/ui/buttons"
+import { DefaultButton, EventButton } from "@/app/ui/buttons"
 import EventHeader from "@/app/ui/events/header"
 import BriefEvent from "@/app/ui/events/island-dao"
 import SocialLinks from "@/app/ui/events/socials"
@@ -24,6 +24,10 @@ export default function Events() {
   
   const community = useGetCommunity(client, communityKey).data
   const events = useGetEvents(client, umi, communityKey)
+  const activeEventsCount = events.data?.filter(
+    (event) => event.registrationEndsAt && event.registrationEndsAt > Date.now()
+  ).length
+
   const pendingAttendeesForUser = useGetPendingAttendeesForUser(client).data
 
   function onClick(key: string) {
@@ -48,6 +52,22 @@ export default function Events() {
           </div> :
           ""
         }
+        <div className="flex w-full mt-4 px-2 gap-4">
+          <EventButton selected={true}>
+            <div className="flex gap-2">
+              Events
+              {activeEventsCount ? 
+                <p className="bg-fosho-red text-white rounded-full">
+                  <span className="p-2 text-sm">
+                    {activeEventsCount}
+                  </span>
+                </p>
+              : ""}
+            </div>
+            
+            </EventButton>
+          <EventButton selected={false}>Commitments</EventButton>
+        </div>
         <div className="mt-4 mb-12">
           {
             events.isFetching ?
