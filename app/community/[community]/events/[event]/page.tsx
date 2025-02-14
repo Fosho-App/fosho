@@ -41,7 +41,7 @@ export default function Event() {
   function verifyUsers() {
     router.push(`/community/${communityKey}/events/${event}/verify`)
   }
-
+  
   return (
     <div className="bg-black text-white p-2 min-h-screen">
       <MainNav />

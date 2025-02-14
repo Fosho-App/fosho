@@ -22,7 +22,7 @@ export function useJoinEvent(client: Program<FoshoProgram>, community: PublicKey
         accountsPartial({
           community,
           event,
-          eventAuthority: wallet.publicKey,
+          eventAuthority: null,
           attendee: wallet.publicKey,
           tokenProgram: TOKEN_PROGRAM_ID,
           mplCoreProgram: mplCoreProgramKey

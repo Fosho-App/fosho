@@ -906,7 +906,8 @@ export type FoshoProgram = {
           "name": "eventAuthority",
           "docs": [
             "if it exists they would have to sign this transaction"
-          ]
+          ],
+          "optional": true
         },
         {
           "name": "attendee",
