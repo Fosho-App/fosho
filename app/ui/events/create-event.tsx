@@ -118,6 +118,12 @@ export default function CreateEventForm(
         </div>
       </div>
       <div className="flex flex-col gap-[2px] mt-2">
+        <label htmlFor="" className={`${bebas.className}`}>Organizer</label>
+        <input type="text" id="" className="p-1 bg-[#222222] border-[1px] border-[#414141] rounded-lg" 
+          value={event.organizer} onChange={e => handleChange("organizer", e.target.value)}
+        />
+      </div>
+      <div className="flex flex-col gap-[2px] mt-2">
         <label htmlFor="" className={`${bebas.className}`}>Location</label>
         <input type="text" id="" className="p-1 bg-[#222222] border-[1px] border-[#414141] rounded-lg" 
           value={event.location} onChange={e => handleChange("location", e.target.value)}
