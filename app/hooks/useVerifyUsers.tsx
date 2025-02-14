@@ -49,7 +49,10 @@ export function useVerifyUser(
     },
     onSuccess: async() => {
       await queryClient.invalidateQueries({
-          queryKey: ['get-events', {community: community.toBase58()}]
+        queryKey: ['get-event', {event: event.toBase58()}]
+      })
+      await queryClient.invalidateQueries({
+        queryKey: ['get-attendee-record', {attendeeKey: attendeeRecord}]
       })     
     }
   })

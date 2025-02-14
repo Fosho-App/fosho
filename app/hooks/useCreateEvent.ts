@@ -1,6 +1,6 @@
 
 import { useWallet } from "@solana/wallet-adapter-react"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { EventData } from "../community/[community]/events/create/page"
 import {Program, BN, utils} from "@coral-xyz/anchor"
 import { FoshoProgram } from "../plugin/fosho_program"
@@ -10,6 +10,7 @@ import { PublicKey } from "@solana/web3.js"
 export function useCreateEvent(client: Program<FoshoProgram>, communityKey: string) {
   const wallet = useWallet()
   const communityData = useGetCommunity(client, communityKey).data
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationKey: ["create-event", {publicKey: wallet.publicKey}],
@@ -84,6 +85,11 @@ export function useCreateEvent(client: Program<FoshoProgram>, communityKey: stri
       }).rpc()
 
       return {tx, eventKey: eventKey.toBase58()}
+    },
+    onSuccess: async() => {
+      await queryClient.invalidateQueries({
+        queryKey: ['get-events', {community: communityKey}]
+      })   
     }
   })
 }

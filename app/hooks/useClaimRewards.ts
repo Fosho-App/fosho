@@ -41,7 +41,10 @@ export function useClaimRewards(
     },
     onSuccess: async() => {
       await queryClient.invalidateQueries({
-          queryKey: ['get-events', {community: community.toBase58()}]
+        queryKey: ['get-event', {event: event.toBase58()}]
+      })
+      await queryClient.invalidateQueries({
+        queryKey: ['get-attendee-record', {event: event, publicKey: wallet.publicKey}]
       })     
     }
   })
