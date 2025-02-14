@@ -75,7 +75,7 @@ export default function CreateEvent() {
     console.log(result)
     if (result) {
       setTxLink(result.tx)
-      router.push(`/community/${params.community}/events/${result.eventKey}`)
+      router.push(`/community/${params.community}/events`)
     }
   }
 

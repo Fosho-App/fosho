@@ -49,7 +49,7 @@ export default function CreateEventForm(
       </div>
       <div className="flex gap-2 mt-2">
         <div className="flex flex-col gap-[2px] w-1/2">
-          <label htmlFor="" className={`${bebas.className}`}>Max # of Attendees</label>
+          <label htmlFor="" className={`${bebas.className}`}>Capacity (0 for no cap)</label>
           <input type="number" id="" className="p-1 bg-[#222222] border-[1px] border-[#414141] rounded-lg" 
             value={event.capacity} onChange={e => handleChange("capacity", parseInt(e.target.value))}
           />
@@ -59,8 +59,8 @@ export default function CreateEventForm(
           <input type="text" id="" className="p-1 bg-[#222222] border-[1px] border-[#414141] rounded-lg" 
             value={event.rewardAmount.toString()} onChange={e => handleChange("rewardAmount", new BN(e.target.value))}
           />
-          <select onChange={e => handleChange("rewardMint", e.target.value)} className="bg-[#222222]">
-            <option disabled selected value={undefined}> -- select mint -- </option>
+          <select onChange={e => handleChange("rewardMint", e.target.value)} className="bg-[#222222]" defaultValue={undefined}>
+            <option value={undefined}> -- select mint -- </option>
             {tokens.map(token => (
               <option value={token.mint} key={token.mint}>
                 {ellipsify(token.mint, 6)}
