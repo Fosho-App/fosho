@@ -52,8 +52,8 @@ export function EventButton(
   return (
     <div className={`
       ${selected ? 'bg-background-second text-white' : 'bg-background-main text-[#818181]'} 
-      rounded-md ${inter.className} text-sm py-1 px-4 cursor-pointer text-white`
-    }
+      rounded-md ${inter.className} text-sm py-1 px-4 cursor-pointer text-white`}
+      onClick={onClick}
     >
       {children}
     </div>

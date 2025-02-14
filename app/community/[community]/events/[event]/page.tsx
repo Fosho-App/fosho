@@ -1,6 +1,6 @@
 'use client'
 
-import { useGetEvent, useGetEvents } from "@/app/hooks/useGetEvents";
+import { useGetEvent } from "@/app/hooks/useGetEvents";
 import { ClientContext, ClientContextType } from "@/app/providers/client-provider";
 import { bebas } from "@/app/ui/fonts";
 import { PublicKey } from "@solana/web3.js";
