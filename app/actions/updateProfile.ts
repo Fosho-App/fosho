@@ -43,15 +43,16 @@ export default async function updateProfileHandler(
   `;
 
   const data = currentData.rowCount ?
-    await sql`
-      UPDATE profiles Set name=${profileData.name ?? ''}, twitter=${profileData.twitter ?? ''},
-      telegram=${profileData.telegram ?? ''}, about=${profileData.about ?? ''}
-      WHERE wallet=${walletAddress};` :
-    await sql`
+    await sql.query(`
+      UPDATE profiles Set name= $1, twitter= $2, telegram= $3, about= $4
+      WHERE wallet=$5`,
+      [profileData.name ?? '', profileData.twitter ?? '', profileData.telegram ?? '', profileData.about ?? '', walletAddress]
+    ) :
+    await sql.query(`
       INSERT into profiles (wallet, name, twitter, telegram, about)
-      VALUES (${walletAddress}, ${profileData.name ?? ''}, ${profileData.twitter ?? ''}, ${profileData.telegram ?? ''},
-      ${profileData.about ?? ''});
-  `;
+      VALUES ($1, $2, $3, $4, $5);`,
+      [walletAddress, profileData.name ?? '', profileData.twitter ?? '', profileData.telegram ?? '', profileData.about ?? '']
+    );
   
   return data.rowCount
 }

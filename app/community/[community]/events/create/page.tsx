@@ -72,10 +72,9 @@ export default function CreateEvent() {
   async function createEventHandler() {
     setTxLink("")
     const result = await mutateAsync(event)
-    console.log(result)
     if (result) {
       setTxLink(result.tx)
-      router.push(`/community/${params.community}/events`)
+      router.push(`/community/${params.community}`)
     }
   }
 

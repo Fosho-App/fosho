@@ -38,11 +38,12 @@ async function fetchProfileHandler(
       throw "signature verification failed"
     }
   
-    const data = await sql`
+    const data = await sql.query(`
       SELECT profiles.name, profiles.twitter, profiles.telegram, profiles.about
       FROM profiles
-      WHERE profiles.wallet=${walletAddress}
-    `
+      WHERE profiles.wallet= $1`,
+      [walletAddress]
+    )
 
     return {
       name: data.rows[0].name,

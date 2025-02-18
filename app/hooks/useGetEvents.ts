@@ -40,7 +40,7 @@ export function useGetEvent(client: Program<FoshoProgram>, umi: Umi, eventKey: s
     queryFn: async(): Promise<EventInfo | null> => {
       try {
         const event = await client.account.event.fetch(new PublicKey(eventKey))
-        console.log("fetched event: ", event)
+        console.log("fetched event: ", eventKey)
         const [nftKey] = getEventCollectionKey(new PublicKey(eventKey))
         const coreData = await fetchCollectionV1(umi, publicKey(nftKey))
         const eventData = parseEvents(event, new PublicKey(eventKey), coreData)

@@ -3,6 +3,7 @@ import { useWallet } from "@solana/wallet-adapter-react"
 import { useQuery } from "@tanstack/react-query"
 import fetchProfileHandler from "../actions/fetchProfile"
 import { decodeUTF8 } from "tweetnacl-util"
+import fetchProfilesHandler from "../actions/fetchProfiles"
 
 export function useGetProfileData() {
   const wallet = useWallet()
@@ -27,6 +28,30 @@ export function useGetProfileData() {
         )
         
         console.log("current profile fetched.")
+        return profile
+      } catch {
+        return null
+      }
+    },
+    refetchOnWindowFocus: false,
+    staleTime: Infinity
+  })
+}
+
+export function useGetProfilesData(addresses?: string[]) {
+  const wallet = useWallet()
+
+  return useQuery({
+    queryKey: ['fetch-profile-data', {addresses}],
+    queryFn: async() => {   
+      try {
+        if (!wallet.publicKey || !addresses) {
+          return null
+        }
+
+        console.log(addresses)
+        const profile = await fetchProfilesHandler(addresses)
+        console.log("requested profiles fetched.")
         return profile
       } catch {
         return null

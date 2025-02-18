@@ -3,6 +3,7 @@
 import { useGetCommunity } from "@/app/hooks/useCommunity";
 import { useGetAttendeesForEvent } from "@/app/hooks/useGetAttendee";
 import { useGetEvent } from "@/app/hooks/useGetEvents";
+import { useGetProfilesData } from "@/app/hooks/useProfileData";
 import { ClientContext, ClientContextType } from "@/app/providers/client-provider";
 import { Attendee } from "@/app/ui/event/attendee";
 import { bebas } from "@/app/ui/fonts";
@@ -22,7 +23,10 @@ export default function Attendees() {
   const eventData = useGetEvent(client, umi, event as string).data 
   const attendeeRecords = useGetAttendeesForEvent(client, event as string).data
   const communityData = useGetCommunity(client, community as string).data
-
+  const attendeeNames = useGetProfilesData(
+    attendeeRecords?.map((attendee) => attendee.owner.toBase58())
+  ).data
+  
   function backToEvents() {
     router.push(`/community/${community}/events/${event}`)
   }
@@ -50,7 +54,10 @@ export default function Attendees() {
           {attendeeRecords ?
             attendeeRecords.map((attendee, index) => (
               <div key={attendee.publicKey.toBase58()} className="w-full">
-                <Attendee attendee={attendee} index={index} verifyUsers={verifyUsers}
+                <Attendee 
+                  attendee={attendee} verifyUsers={verifyUsers}
+                  index={index}
+                  name={attendeeNames?.find(a => a.wallet === attendee.owner.toBase58())?.name}
                   isOwner={
                     publicKey !== null && 
                     communityData !== null && 

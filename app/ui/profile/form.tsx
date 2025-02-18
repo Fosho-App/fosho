@@ -15,8 +15,8 @@ function FormElement(
         value={currentValue ?? ""}
         onChange={e => handleChange(elementId, e.target.value)}
         className="bg-[#222222] border-[1px] border-[#414141] rounded-md w-full text-sm
-        placeholder:text-[#9A9A9A] py-1 placeholder:font-sans placeholder:text-xs placeholder:pl-2
-        max-w-[480px]"
+        placeholder:text-[#9A9A9A] py-1 placeholder:font-sans placeholder:text-xs
+        max-w-[480px] mt-1 pl-2"
         placeholder={placeholder}
       />
     </div>
@@ -37,7 +37,7 @@ export default function ProfileForm({
   }
 
   return (
-    <div className="m-2 flex flex-col">
+    <div className="m-1 flex flex-col">
       <FormElement 
         handleChange={handleChange} 
         elementId="name" placeholder="Full Name" label="Name" currentValue={profile.name} 
@@ -52,7 +52,7 @@ export default function ProfileForm({
       />
       <FormElement 
         handleChange={handleChange} 
-        elementId="about" placeholder="Tell us about yourself" label="About Me" currentValue={profile.about}
+        elementId="about" placeholder="One liner about yourself.." label="About Me" currentValue={profile.about}
       />
       <div className="w-4/6 text-center m-auto mt-2">
         <DefaultButton 

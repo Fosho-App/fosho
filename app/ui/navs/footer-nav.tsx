@@ -1,10 +1,11 @@
 import { BiTrophy } from "react-icons/bi";
+import { FaUser } from "react-icons/fa6";
 import { IoDiamondOutline } from "react-icons/io5";
 import { MdOutlineLocalActivity } from "react-icons/md";
 import { PiSquaresFourBold } from "react-icons/pi";
 
 export default function FooterNav({selectedOption}: {selectedOption: number}) {
-  const menuOptions = [0,1,2,3]
+  const menuOptions = [0,1,2,3,4]
 
   return (
     <div className="fixed bottom-0 left-0 h-12 bg-background-main 
@@ -22,7 +23,9 @@ export default function FooterNav({selectedOption}: {selectedOption: number}) {
               <MdOutlineLocalActivity /> :
             option === 2 ?
               <a href="/leaderboard"><BiTrophy /></a> :
-              <a href="/rewards"><IoDiamondOutline /></a>
+            option === 3 ?
+              <a href="/rewards"><IoDiamondOutline /></a> :
+              <a href="/profile"><FaUser className="text-2xl"/></a>
           }
         </span>
       ))}
