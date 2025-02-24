@@ -49,7 +49,6 @@ export function useGetProfilesData(addresses?: string[]) {
           return null
         }
 
-        console.log(addresses)
         const profile = await fetchProfilesHandler(addresses)
         console.log("requested profiles fetched.")
         return profile

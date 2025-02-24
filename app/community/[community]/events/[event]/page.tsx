@@ -58,6 +58,8 @@ export default function Event() {
             <div className="text-center w-full">
               <h1>{currentEvent.name}</h1>
             </div> :
+          currentEvent === undefined ?
+            <div className="text-center w-full">Loading...</div> :
             <div className="text-center w-full">Cannot find the event.</div>
         }
       </div>

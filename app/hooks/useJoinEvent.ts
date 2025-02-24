@@ -35,7 +35,10 @@ export function useJoinEvent(client: Program<FoshoProgram>, community: PublicKey
         queryKey: ['get-event', {event: event.toBase58()}]
       })
       await queryClient.invalidateQueries({
-        queryKey: ['get-attendee-record', {event: event, publicKey: wallet.publicKey}]
+        queryKey: ['get-attendee-record', {event, publicKey: wallet.publicKey}]
+      })
+      await queryClient.invalidateQueries({
+        queryKey: ['get-attendees-for-event', {event: event.toBase58()}]
       })      
     }
   })

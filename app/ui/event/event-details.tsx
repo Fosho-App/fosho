@@ -52,6 +52,15 @@ export default function EventDetails(
             }
           </p>
         </div>
+        <div className="flex items-center gap-2">
+          <LuCalendarRange className="text-fosho-red text-xl"/>
+          <p className="text-sm font-medium">
+            {event.eventEndsAt ?
+              "Ends at " + format(event.eventEndsAt, "EE, MMM d p") :
+              'Unrestricted'
+            }
+          </p>
+        </div>
         {event.location ? 
           <div className="flex items-center gap-2">
             <MdLocationOn className="text-fosho-red text-xl"/>
