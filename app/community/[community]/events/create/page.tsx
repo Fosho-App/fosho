@@ -38,8 +38,9 @@ export type EventData = {
   location: string
   // virtualLink: string | null
   description: string
-  rewardAmount: BN
+  rewardAmount: string
   rewardMint: string | null
+  rewardDecimal: number | null
 }
 
 export default function CreateEvent() {
@@ -60,8 +61,9 @@ export default function CreateEvent() {
     location: "",
     registrationStartsAt: Date.now(),
     registrationEndsAt: Date.now(),
-    rewardAmount: new BN(0),
+    rewardAmount: "0",
     rewardMint: null,
+    rewardDecimal: null,
     organizer: ""
   });
 

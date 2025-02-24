@@ -9,9 +9,17 @@ export default function CreateEventForm(
   {event, tokens, setEvent}: 
   {event: EventData, tokens: TokenHoldingReturnType[], setEvent: (e: EventData) => void}
 ) {
-
   function handleChange(type: string, newValue: string | BN | number) {
     setEvent({...event, [type]: newValue})
+  }
+
+  function handleMintChange(newValue: string) {
+    setEvent({
+      ...event, 
+      rewardMint: newValue, 
+      rewardDecimal: tokens.find(token => token.mint === newValue)?.decimals ?? 0,
+      rewardAmount: "0"
+    })
   }
 
   function handleDateChange(
@@ -56,10 +64,15 @@ export default function CreateEventForm(
         </div>
         <div className="flex flex-col gap-[2px] w-1/2">
           <label htmlFor="" className={`${bebas.className}`}>Reward Per User</label>
-          <input type="text" id="" className="p-1 bg-[#222222] border-[1px] border-[#414141] rounded-lg" 
-            value={event.rewardAmount.toString()} onChange={e => handleChange("rewardAmount", new BN(e.target.value))}
+          <input type="number" id="" className="p-1 bg-[#222222] border-[1px] border-[#414141] rounded-lg" 
+            value={event.rewardAmount} 
+            onChange={e => handleChange("rewardAmount", e.target.value)}
+            disabled={typeof event.rewardMint !== 'string'}
           />
-          <select onChange={e => handleChange("rewardMint", e.target.value)} className="bg-[#222222]" defaultValue={undefined}>
+          <select 
+            onChange={e => handleMintChange(e.target.value)} 
+            className="bg-[#222222]" defaultValue={undefined}
+          >
             <option value={undefined}> -- select mint -- </option>
             {tokens.map(token => (
               <option value={token.mint} key={token.mint}>

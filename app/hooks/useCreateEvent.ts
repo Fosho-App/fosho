@@ -44,6 +44,7 @@ export function useCreateEvent(client: Program<FoshoProgram>, communityKey: stri
         registrationEndsAt,
         registrationStartsAt, 
         rewardAmount, 
+        rewardDecimal,
         location,
         capacity,
         organizer
@@ -73,7 +74,7 @@ export function useCreateEvent(client: Program<FoshoProgram>, communityKey: stri
         null,
         description,
         { regular: {}},
-        rewardAmount,
+        rewardAmount && rewardDecimal ? new BN(parseFloat(rewardAmount)*Math.pow(10,rewardDecimal)) : new BN(0),
         [],
         false
       ).accountsPartial({
