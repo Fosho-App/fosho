@@ -4,13 +4,15 @@ import { removeZeros } from "../utils";
 type FormatBalanceProps = {
   decimals: number | undefined,
   weight: BN,
-  name: string | null | undefined
+  name: string | null | undefined,
+  customSize?: boolean
 }
 
 export function FormatBalance({
   decimals,
   weight,
-  name
+  name,
+  customSize
 }: FormatBalanceProps
 ) {
   const pow = decimals ? new BN(10).pow(new BN(decimals)) : new BN(1)
@@ -22,8 +24,7 @@ export function FormatBalance({
     <span>
       {base.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
       {decis.toNumber() !== 0 && "."}
-      {removeZeros(decisString)}
-       {name}
+      {removeZeros(decisString)} <span className={customSize ? "text-xl" : ""}>{name}</span>
     </span>
   )
 }

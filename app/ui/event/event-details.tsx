@@ -10,6 +10,7 @@ import { HiUsers } from "react-icons/hi";
 import { bebas } from "../fonts";
 import { BN } from "@coral-xyz/anchor";
 import { CiViewList } from "react-icons/ci";
+import { ellipsify } from "@/app/utils";
 
 export default function EventDetails(
   {event, mintData, viewAttendees} : 
@@ -35,7 +36,7 @@ export default function EventDetails(
               <FormatBalance
                 decimals={mintData?.decimals} 
                 weight={event.rewardPerUser} 
-                name={mintData?.name} 
+                name={mintData?.name ?? (mintData && ellipsify(mintData?.address.toBase58(),2,1))} 
               /> :
               "-"
             }

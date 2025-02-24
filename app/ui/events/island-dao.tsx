@@ -7,6 +7,7 @@ import {BN} from "@coral-xyz/anchor";
 import { useGetMintData } from "@/app/hooks/useMintData";
 import { FormatBalance } from "../format-balance";
 import { EventInfo } from "@/app/plugin/client";
+import { ellipsify } from "@/app/utils";
 
 export default function BriefEvent(
   {event, onClick}: {event: EventInfo, onClick: (s: string) => void}
@@ -39,7 +40,11 @@ export default function BriefEvent(
               <p className="text-sm text-secondary-text">Reward</p>
               <h4 className="text-white font-bold">{
               event.rewardPerUser.gt(new BN(0)) ?
-                <FormatBalance decimals={mintData?.decimals} weight={event.rewardPerUser} name={mintData?.name} /> :
+                <FormatBalance 
+                  decimals={mintData?.decimals} 
+                  weight={event.rewardPerUser} 
+                  name={mintData?.name ?? (mintData && ellipsify(mintData?.address.toBase58(),2,1))} 
+                /> :
                 "-"
               }</h4>
             </div>

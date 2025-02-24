@@ -8,6 +8,7 @@ import { useClaimRewards } from "@/app/hooks/useClaimRewards";
 import { useContext } from "react";
 import { ClientContext, ClientContextType } from "@/app/providers/client-provider";
 import { DefaultButton } from "@/app/ui/buttons";
+import { ellipsify } from "@/app/utils";
 
 export default function ClaimRewards(
   {event, communityKey, mintData, attendeeRecordKey} : 
@@ -30,17 +31,19 @@ export default function ClaimRewards(
 
   return (
     <div className="text-center">
-      <h3 className={`${bebas.className} text-light-green text-md`}>
+      <h3 className={`${bebas.className} text-fosho-red text-md`}>
         you can claim
       </h3>
-      <h2 className={`${bebas.className} text-primary-green text-3xl`}>
+      <h2 className={`${bebas.className} text-white text-3xl mb-2`}>
         {event.rewardPerUser.gt(new BN(0)) ?
           <span>
             <FormatBalance
               decimals={mintData?.decimals} 
               weight={event.rewardPerUser} 
-              name={mintData?.name} 
-          /> + </span> : ""} {event.commitmentFee.toNumber()/LAMPORTS_PER_SOL} SOL
+              name={mintData?.name ?? (mintData && ellipsify(mintData?.address.toBase58(),2,1))}
+              customSize={true}
+          /> + </span> : ""} {event.commitmentFee.toNumber()/LAMPORTS_PER_SOL} 
+          <span className="text-xl ml-1">SOL</span>
       </h2>
       <DefaultButton full={true} disabled={isPending || isSuccess} onClick={claimRewards}>
         {

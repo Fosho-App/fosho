@@ -1,9 +1,9 @@
 import { PublicKey } from "@solana/web3.js";
 
-export function ellipsify(str: string, len = 4) {
+export function ellipsify(str: string, len = 4, dots = 2) {
   if (str.length > 30) {
     return (
-      str.substring(0, len) + '..' + str.substring(str.length - len, str.length)
+      str.substring(0, len) + '.'.repeat(dots) + str.substring(str.length - len, str.length)
     );
   }
   return str;
