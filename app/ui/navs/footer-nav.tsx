@@ -18,7 +18,7 @@ export default function FooterNav({selectedOption}: {selectedOption: number}) {
         >
           {
             option === 0 ?
-              <a href="/communities"><PiSquaresFourBold /></a> :
+              <a href="/community"><PiSquaresFourBold /></a> :
             option === 1 ?
               <MdOutlineLocalActivity /> :
             option === 2 ?

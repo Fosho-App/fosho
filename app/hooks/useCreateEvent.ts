@@ -42,22 +42,14 @@ export function useCreateEvent(client: Program<FoshoProgram>, communityKey: stri
         eventEndsAt,
         eventStartsAt, 
         registrationEndsAt,
-        registrationStartsAt, 
+        registrationStartsAt,
+        cancellationOverAt,
         rewardAmount, 
         rewardDecimal,
         location,
         capacity,
         organizer
       } = eventData
-
-      console.log(
-        Date.now(),
-        eventStartsAt,
-        eventEndsAt,
-        registrationStartsAt,
-        registrationEndsAt,
-        eventStartsAt > registrationEndsAt
-      )
 
       const tx = await client.methods.createEvent(
         name,
@@ -69,6 +61,7 @@ export function useCreateEvent(client: Program<FoshoProgram>, communityKey: stri
         new BN(eventEndsAt/1000),
         new BN(registrationStartsAt/1000),
         new BN(registrationEndsAt/1000),
+        new BN(eventStartsAt/1000 - cancellationOverAt* 86400),
         new BN(capacity),
         location,
         null,

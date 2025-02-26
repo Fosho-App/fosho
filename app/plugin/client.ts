@@ -61,6 +61,18 @@ export function createClient(connection: Connection, wallet: AnchorWallet) {
   )
 }
 
+export function getEventTicketKey(event: PublicKey,owner: PublicKey) {
+  return PublicKey.findProgramAddressSync(
+    [
+      Buffer.from("event"),
+      event.toBuffer(),
+      owner.toBuffer(),
+      Buffer.from("ticket"),
+    ],
+    new PublicKey(idl.address)
+  )[0]
+}
+
 export async function getEvents(
   program: Program<FoshoProgram>,
   umi: Umi,
@@ -85,7 +97,7 @@ export async function getEvents(
     events.push(eventWithDefaults)
   }
 
-  return events.sort((a,b) => a.eventStartsAt && b.eventStartsAt ? b.eventStartsAt - a.eventStartsAt : -1)
+  return events.sort((a,b) => a.registrationStartsAt && b.registrationStartsAt ? b.registrationStartsAt - a.registrationStartsAt : -1)
 
 }
 
@@ -117,7 +129,7 @@ export function parseEvents(
   }
   
   eventWithDefaults.name = coreData.name
-  eventWithDefaults.current = coreData.numMinted
+  eventWithDefaults.current = coreData.currentSize
 
   return eventWithDefaults
 }

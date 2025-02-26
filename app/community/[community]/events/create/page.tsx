@@ -34,6 +34,7 @@ export type EventData = {
   eventEndsAt: number
   registrationStartsAt: number
   registrationEndsAt: number
+  cancellationOverAt: number
   capacity: number
   location: string
   // virtualLink: string | null
@@ -50,6 +51,7 @@ export default function CreateEvent() {
   
   const {mutateAsync, isPending, isError, error} = useCreateEvent(client, params.community as string)
   const [txLink, setTxLink] = useState<string | null>(null);
+  const [errorMsg, setError] = useState<string | null>(null);
 
   const [event, setEvent] = useState<EventData>({
     name: "",
@@ -61,6 +63,7 @@ export default function CreateEvent() {
     location: "",
     registrationStartsAt: Date.now(),
     registrationEndsAt: Date.now(),
+    cancellationOverAt: 0,
     rewardAmount: "0",
     rewardMint: null,
     rewardDecimal: null,
@@ -73,6 +76,15 @@ export default function CreateEvent() {
 
   async function createEventHandler() {
     setTxLink("")
+    setError(null)
+
+    if (parseFloat(event.rewardAmount) > 0) {
+      if (event.capacity === 0) {
+        setError("Capacity must be set if reward amount is greater than 0")
+        return
+      }
+    }
+
     const result = await mutateAsync(event)
     if (result) {
       setTxLink(result.tx)
@@ -106,10 +118,11 @@ export default function CreateEvent() {
       </div>
       <div className="mt-4">{txLink}</div>
       {
-        isError && 
+        isError || errorMsg ? 
         <div className="text-sm my-2 text-center text-red-500">
-          {error.message}
-        </div>
+          {error?.message ?? errorMsg}
+        </div> :
+        ""
       }
     </div>
   )

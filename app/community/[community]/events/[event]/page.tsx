@@ -9,7 +9,7 @@ import { useContext } from "react";
 import { IoChevronBack } from "react-icons/io5";
 import JoinEvent from "./commit";
 import Ticket from "./ticket";
-import { useGetAttendee } from "@/app/hooks/useGetAttendee";
+import { useGetAttendee, useGetTicketForUser } from "@/app/hooks/useGetAttendee";
 import { useGetCommunity } from "@/app/hooks/useCommunity";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { DefaultButton } from "@/app/ui/buttons";
@@ -31,6 +31,7 @@ export default function Event() {
   const community = useGetCommunity(client, communityKey).data
 
   const attendeeRecord = useGetAttendee(client, currentEvent?.publicKey).data
+  const attendeeTicket = useGetTicketForUser(client, currentEvent?.publicKey).data
   const mintData = useGetMintData(currentEvent?.rewardMint?.toBase58()).data
 
   function backToEvents() {
@@ -67,6 +68,8 @@ export default function Event() {
       <div className="text-white">
         {currentEvent ?
           attendeeRecord === null ?
+            attendeeTicket ?
+              <EventOver eventOverType={EventOverType.Cancelled} /> :
             publicKey && !community?.authority.equals(publicKey) ?
               currentEvent.eventEndsAt && currentEvent.eventEndsAt < Date.now() ?
                 <div className="w-full text-center">
@@ -85,9 +88,15 @@ export default function Event() {
               communityKey={new PublicKey(communityKey)} 
               mintData={mintData} 
               attendeeRecordKey={attendeeRecord.publicKey}
+              eventEndsAt={currentEvent.eventEndsAt}
             /> :
           attendeeRecord?.status.pending && currentEvent.eventEndsAt && currentEvent.eventEndsAt > Date.now() ?
-            <Ticket attendee={attendeeRecord} organizer={currentEvent.organizer} /> :
+            <Ticket 
+              attendee={attendeeRecord} 
+              organizer={currentEvent.organizer}
+              communityKey={new PublicKey(communityKey)}
+              eventKey={currentEvent.publicKey} 
+            /> :
           attendeeRecord?.status.rejected ?
             <EventOver eventOverType={EventOverType.Rejected} /> :
             <EventOver eventOverType={EventOverType.ClaimOver} /> :

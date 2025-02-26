@@ -46,17 +46,17 @@ export function SecondaryButton({children}: {children: ReactNode}) {
 }
 
 export function EventButton(
-  {children, onClick, selected }: 
-  {children: ReactNode, selected: boolean, onClick?: () => void}
+  {children, onClick, disabled, selected }: 
+  {children: ReactNode, selected: boolean, disabled?: boolean, onClick?: () => void}
 ) {
   return (
-    <div className={`
+    <button className={`
       ${selected ? 'bg-background-second text-white' : 'bg-background-main text-[#818181]'} 
       rounded-md ${inter.className} text-sm py-1 px-4 cursor-pointer text-white`}
-      onClick={onClick}
+      onClick={onClick} disabled={disabled}
     >
       {children}
-    </div>
+    </button>
   )
 }
 

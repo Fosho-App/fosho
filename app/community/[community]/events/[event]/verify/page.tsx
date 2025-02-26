@@ -32,7 +32,7 @@ export default function VerifyUser() {
   const eventInfo = useGetEvents(client, umi, community as string)
     .data?.find(e => e.publicKey.toBase58() === event)
 
-  const { mutateAsync, isSuccess } = useVerifyUser(
+  const { mutateAsync, isSuccess, error } = useVerifyUser(
     client, 
     new PublicKey(community as string),
     new PublicKey(event as string),
@@ -60,6 +60,7 @@ export default function VerifyUser() {
   }
 
   async function verifyUser(accept: boolean) {
+    setError("")
     if (attendeeRecord) {
       await mutateAsync({acceptAttendee: accept, owner: attendeeRecord.owner})
     } else {
@@ -90,11 +91,11 @@ export default function VerifyUser() {
                     <VerifyButton color="bg-green-600" onClick={() => verifyUser(true)}>Approve</VerifyButton>
                     <VerifyButton color="bg-red-600" onClick={() => verifyUser(false)}>Reject</VerifyButton>
                   </div>
-                  {errorMsg && 
+                  {errorMsg || error ?
                     <div className="text-sm my-2 text-center text-red-500">
-                      {errorMsg}
+                      {error?.message || errorMsg}
                     </div>
-                  }
+                  : null}
                   {isSuccess && 
                     <div className="text-white text-center mt-6">
                       <div>Transaction is Successful.</div>

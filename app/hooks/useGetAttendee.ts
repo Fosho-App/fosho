@@ -3,6 +3,7 @@ import { FoshoProgram } from "../plugin/fosho_program"
 import { Program } from "@coral-xyz/anchor"
 import { PublicKey } from "@solana/web3.js"
 import { useWallet } from "@solana/wallet-adapter-react"
+import { getEventTicketKey } from "../plugin/client"
 
 export function useGetAttendee(client: Program<FoshoProgram>, eventKey?: PublicKey) {
   const {publicKey} = useWallet()
@@ -23,7 +24,10 @@ export function useGetAttendee(client: Program<FoshoProgram>, eventKey?: PublicK
 
         const attendeeRecord = await client.account.attendee.fetch(attendeeKey)
         console.log("Fetched attendee record")
-        return {...attendeeRecord, publicKey: attendeeKey}
+        return {
+          ...attendeeRecord, 
+          publicKey: attendeeKey,
+        }
       } catch(e) {
         console.log(e)
         return null
@@ -80,24 +84,28 @@ export function useGetAttendeesForEvent(client: Program<FoshoProgram>, event: st
   })
 }
 
-export function useGetAttendeesForUser(client: Program<FoshoProgram>) {
+export function useGetAttendeesForUser(client: Program<FoshoProgram>, community: string) {
   const {publicKey} = useWallet()
   const user = publicKey?.toBase58()
 
   return useQuery({
-    queryKey: ['get-attendees-for-event', {user}],
+    queryKey: ['get-attendees-for-user', {user, community}],
     queryFn: async() => {
       if (!user) {
         return null
       }
       
       try {
-        const attendeeRecords = await client.account.attendee.all([{
-          memcmp: {
+        const attendeeRecords = await client.account.attendee.all([
+          {memcmp: {
             offset: 40,
+            bytes: community
+          }},
+          {memcmp: {
+            offset: 72,
             bytes: user
-          }
-        }])
+          }}
+        ])
 
         console.log("Fetched attendee records for user: ", user)
         return attendeeRecords.map(record => ({...record.account, publicKey: record.publicKey}))
@@ -111,20 +119,45 @@ export function useGetAttendeesForUser(client: Program<FoshoProgram>) {
   })
 }
 
-export function useGetPendingAttendeesForUser(client: Program<FoshoProgram>) {
+export function useGetPendingAttendeesForUser(client: Program<FoshoProgram>, community: string) {
   const {publicKey} = useWallet()
   const user = publicKey?.toBase58()
-  const attendeesForUser = useGetAttendeesForUser(client).data
+  const attendeesForUser = useGetAttendeesForUser(client, community).data
 
   return useQuery({
     enabled: attendeesForUser !== undefined,
-    queryKey: ['get-pending-attendees-for-user', {user}],
+    queryKey: ['get-pending-attendees-for-user', {user, community}],
     queryFn: async() => {
       if (!user || !attendeesForUser) {
         return null
       }
 
       return attendeesForUser.filter(attendee => attendee.status.verified)
+    },
+    refetchOnWindowFocus: false,
+    staleTime: Infinity
+  })
+}
+
+export function useGetTicketForUser(client: Program<FoshoProgram>, eventKey?: PublicKey) {
+  const {publicKey} = useWallet()
+
+  return useQuery({
+    queryKey: ['get-ticket-for-user', {event: eventKey, publicKey}],
+    queryFn: async() => {
+      if (!publicKey || !eventKey) {
+        console.log(publicKey, eventKey)
+        return null
+      }
+
+      try {
+        const attendeeTicket = getEventTicketKey(eventKey, publicKey)
+        const ticketExists = await client.provider.connection.getAccountInfo(attendeeTicket)
+        return ticketExists ? true : null
+      } catch {
+        return null
+      }
+
     },
     refetchOnWindowFocus: false,
     staleTime: Infinity

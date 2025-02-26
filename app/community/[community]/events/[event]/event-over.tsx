@@ -3,7 +3,8 @@ import { bebas } from "@/app/ui/fonts";
 export enum EventOverType {
   CommitOver,
   ClaimOver,
-  Rejected
+  Rejected,
+  Cancelled
 }
 
 export function EventOver({eventOverType}: {eventOverType: EventOverType}) {
@@ -14,6 +15,8 @@ export function EventOver({eventOverType}: {eventOverType: EventOverType}) {
           "Sorry, the event is over. You can no longer claim back the commitment fees." :
         eventOverType === EventOverType.CommitOver ?
           "The event is over. You can no longer commit to the event." :
+        eventOverType === EventOverType.Cancelled ?
+          "You cannot re-commit to the event." :
           "Your commitment has been rejected."
       }
     </h3>

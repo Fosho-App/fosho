@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/fosho_program.json`.
  */
 export type FoshoProgram = {
-  "address": "FhtVsW3qx9Qpz3bsbQXsVU1wjfqzw7ee6q1Wv2QQEsS6",
+  "address": "GPZK5JANR7VTSuQims7fyZxYz6cXmvcz9pMv3B5hCfnw",
   "metadata": {
     "name": "foshoProgram",
     "version": "0.1.0",
@@ -13,6 +13,202 @@ export type FoshoProgram = {
     "description": "Created with Anchor"
   },
   "instructions": [
+    {
+      "name": "cancelCommit",
+      "discriminator": [
+        158,
+        121,
+        111,
+        125,
+        253,
+        235,
+        148,
+        78
+      ],
+      "accounts": [
+        {
+          "name": "attendeeRecord",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  116,
+                  116,
+                  101,
+                  110,
+                  100,
+                  101,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "account",
+                "path": "attendee"
+              }
+            ]
+          }
+        },
+        {
+          "name": "event",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event.community",
+                "account": "event"
+              },
+              {
+                "kind": "account",
+                "path": "event.nonce",
+                "account": "event"
+              }
+            ]
+          }
+        },
+        {
+          "name": "community",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  109,
+                  117,
+                  110,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "community.seed",
+                "account": "community"
+              }
+            ]
+          }
+        },
+        {
+          "name": "eventCollection",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "eventAuthority",
+          "docs": [
+            "if it exists they would have to sign this transaction"
+          ],
+          "optional": true
+        },
+        {
+          "name": "attendee",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "ticket",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  118,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "event"
+              },
+              {
+                "kind": "account",
+                "path": "attendee"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  105,
+                  99,
+                  107,
+                  101,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "mplCoreProgram",
+          "address": "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d"
+        },
+        {
+          "name": "tokenProgram"
+        }
+      ],
+      "args": []
+    },
     {
       "name": "cancelEvent",
       "discriminator": [
@@ -717,6 +913,12 @@ export type FoshoProgram = {
         },
         {
           "name": "registrationEndsAt",
+          "type": {
+            "option": "i64"
+          }
+        },
+        {
+          "name": "cancellationOverAt",
           "type": {
             "option": "i64"
           }
@@ -1436,141 +1638,161 @@ export type FoshoProgram = {
     },
     {
       "code": 6002,
+      "name": "invalidCancellationOverTime",
+      "msg": "Cancellation over time cannot exceed the event start time"
+    },
+    {
+      "code": 6003,
+      "name": "cancellationNotAllowed",
+      "msg": "Commitment cannot be cancelled for this event"
+    },
+    {
+      "code": 6004,
+      "name": "cancellationPeriodEnded",
+      "msg": "Cancellation is no longer allowed for this event"
+    },
+    {
+      "code": 6005,
       "name": "invalidEventStartTime",
       "msg": "The event must start in a future."
     },
     {
-      "code": 6003,
+      "code": 6006,
       "name": "registrationNotStarted",
       "msg": "The registration period has not started yet"
     },
     {
-      "code": 6004,
+      "code": 6007,
       "name": "registrationEnded",
       "msg": "The registration period has ended"
     },
     {
-      "code": 6005,
+      "code": 6008,
       "name": "maximumTicketsReached",
       "msg": "The maximum number of tickets has been reached"
     },
     {
-      "code": 6006,
+      "code": 6009,
       "name": "attendeeStatusPending",
       "msg": "The rewards cannot be claimed during the pending status"
     },
     {
-      "code": 6007,
+      "code": 6010,
+      "name": "attendeeStatusNotPending",
+      "msg": "The commitment can only be cancelled in the pending status"
+    },
+    {
+      "code": 6011,
       "name": "invalidClaimer",
       "msg": "Not a valid claimer"
     },
     {
-      "code": 6008,
+      "code": 6012,
       "name": "accountNotProvided",
       "msg": "One of the accounts required for this ix is not provided"
     },
     {
-      "code": 6009,
+      "code": 6013,
       "name": "alreadyClaimed",
       "msg": "this attendee has already claimed the rewards"
     },
     {
-      "code": 6010,
+      "code": 6014,
       "name": "missingAttribute",
       "msg": "The attribute is missing"
     },
     {
-      "code": 6011,
+      "code": 6015,
       "name": "numericalOverflow",
       "msg": "Numerical Overflow"
     },
     {
-      "code": 6012,
+      "code": 6016,
       "name": "eventAuthorityMustSign",
       "msg": "Event Authority must sign"
     },
     {
-      "code": 6013,
+      "code": 6017,
       "name": "invalidEventAuthority",
       "msg": "Event Authority Publickey mismatch"
     },
     {
-      "code": 6014,
+      "code": 6018,
       "name": "alreadyScanned",
       "msg": "Ticket has been signed already"
     },
     {
-      "code": 6015,
+      "code": 6019,
       "name": "eventCancelled",
       "msg": "Event is cancelled"
     },
     {
-      "code": 6016,
+      "code": 6020,
       "name": "eventHasNotEnded",
       "msg": "Event has not ended"
     },
     {
-      "code": 6017,
+      "code": 6021,
       "name": "eventHasNotStarted",
       "msg": "Event has not started"
     },
     {
-      "code": 6018,
+      "code": 6022,
       "name": "eventEnded",
       "msg": "Event has ended"
     },
     {
-      "code": 6019,
+      "code": 6023,
       "name": "invalidCollection",
       "msg": "Invalid Collection"
     },
     {
-      "code": 6020,
+      "code": 6024,
       "name": "invalidCollectionDetails",
       "msg": "Invalid Collection Details"
     },
     {
-      "code": 6021,
+      "code": 6025,
       "name": "nftNotVerified",
       "msg": "Nft Not Verified"
     },
     {
-      "code": 6022,
+      "code": 6026,
       "name": "collectionMissing",
       "msg": "Collection Key is Missing"
     },
     {
-      "code": 6023,
+      "code": 6027,
       "name": "verifiedCreatorMissing",
       "msg": "A verified creator is missing"
     },
     {
-      "code": 6024,
+      "code": 6028,
       "name": "invalidCreator",
       "msg": "Invalid nft creator"
     },
     {
-      "code": 6025,
+      "code": 6029,
       "name": "noCreatorsPresentOnMetadata",
       "msg": "No creators on metadata"
     },
     {
-      "code": 6026,
+      "code": 6030,
       "name": "publicKeyMismatch",
       "msg": "Public Key mismatch"
     },
     {
-      "code": 6027,
+      "code": 6031,
       "name": "wrongAccountOwner",
       "msg": "Incorrect account owner"
     },
     {
-      "code": 6028,
+      "code": 6032,
       "name": "notEnoughRemainingAccounts",
       "msg": "Not enough remaining accounts provided"
     },
     {
-      "code": 6029,
+      "code": 6033,
       "name": "invalidTokenDetails",
       "msg": "User may not have enough tokens or incorrect data has been supplied"
     }
@@ -1583,6 +1805,10 @@ export type FoshoProgram = {
         "fields": [
           {
             "name": "event",
+            "type": "pubkey"
+          },
+          {
+            "name": "community",
             "type": "pubkey"
           },
           {

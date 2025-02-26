@@ -1,13 +1,32 @@
+'use client'
+
 import { inter } from "@/app/ui/fonts";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import {QRCodeCanvas} from 'qrcode.react';
 import { AttendeeInfo } from "@/app/plugin/client";
 import { FaRegUser } from "react-icons/fa";
+import { DefaultButton } from "@/app/ui/buttons";
+import { useContext } from "react";
+import { ClientContext, ClientContextType } from "@/app/providers/client-provider";
+import { useCancelCommit } from "@/app/hooks/useCancelCommit";
+import { PublicKey } from "@solana/web3.js";
 
 export default function Ticket(
-  {attendee, organizer}:
-  {attendee: AttendeeInfo | null | undefined, organizer: string}
+  {attendee, organizer, communityKey, eventKey}:
+  {
+    attendee: AttendeeInfo | null | undefined, 
+    organizer: string, 
+    communityKey: PublicKey, 
+    eventKey: PublicKey
+  }
 ) {
+
+  const {client} = useContext(ClientContext) as ClientContextType
+  const {mutateAsync, isPending, isError, error, isSuccess} = useCancelCommit(client, communityKey, eventKey)
+  
+  async function cancelCommit() {
+    await mutateAsync()
+  }
 
   return (
     attendee ?
@@ -23,12 +42,25 @@ export default function Ticket(
           {organizer ?
             <p className={`${inter.className} text-md text-xs font-medium text-center flex gap-2`}>
               Event Organizer 
-              <FaRegUser className="text-light-green text-[14px]"/>
+              <FaRegUser className="text-fosho-red text-[14px]"/>
               {organizer}
             </p> : ""
           }
           <div className="bg-white p-2 rounded-md">
             <QRCodeCanvas value={attendee.publicKey.toBase58()} />
+          </div>
+          <div className={`text-gray-400 ${inter.className} text-sm`}>OR</div>
+          <DefaultButton full={true} onClick={cancelCommit} disabled={isPending || isSuccess}>
+            Cancel Commitment
+          </DefaultButton>
+          {
+            isError && 
+            <div className="text-sm my-2 text-center text-red-500">
+              {error.message.slice(error.message.indexOf('Error Code') === -1 ? 0 : error.message.indexOf('Error Code'))}
+            </div>
+          }
+          <div className="text-sm text-gray-300">
+            You cannot rejoin the event after you cancel
           </div>
         </div> :
       attendee.status.rejected ?
