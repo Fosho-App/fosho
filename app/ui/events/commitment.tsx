@@ -1,7 +1,5 @@
 import { AttendeeInfo } from "@/app/plugin/client";
 import { EventButton } from "../buttons";
-import { PublicKey } from "@solana/web3.js";
-
 
 export function Commitment(
   {attendee, getEventName, claimReward, disabled}: 
