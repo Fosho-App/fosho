@@ -38,7 +38,7 @@ export default function CreateEventForm(
     newEvent[property] = newDate
     setEvent(newEvent)
   }
-  
+
   return (
     <div className="">
       <div className="flex flex-col gap-[2px]">
@@ -131,12 +131,17 @@ export default function CreateEventForm(
         </div>
       </div>
       <div className="flex flex-col gap-[2px] mt-2">
-        <label htmlFor="" className={`${bebas.className}`}>Cancellation Allowed Till (in days before event starts)</label>
-        <input type="number" id="" className="p-1 bg-[#222222] border-[1px] border-[#414141] rounded-lg" 
-          value={event.cancellationOverAt} onChange={e => handleChange("cancellationOverAt", 
-            parseInt(e.target.value)
-          )}
-        />
+        <label htmlFor="" className={`${bebas.className}`}>Attendees can cancel ticket upto</label>
+        <select 
+          onChange={e => handleChange('cancellationOverAt', parseInt(e.target.value))} 
+          className="bg-[#222222] h-8 rounded-md border-[1px] border-[#414141]" defaultValue={undefined}
+        >
+          {[...Array(6).keys()].map(day => (
+            <option value={day} key={day}>
+              {day ? `${day} days before the event starts` : `the event starts`}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="flex flex-col gap-[2px] mt-2">
         <label htmlFor="" className={`${bebas.className}`}>Organizer</label>
