@@ -11,6 +11,8 @@ import { bebas } from "../fonts";
 import { BN } from "@coral-xyz/anchor";
 import { CiViewList } from "react-icons/ci";
 import { ellipsify } from "@/app/utils";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function EventDetails(
   {event, mintData, viewAttendees} : 
@@ -66,7 +68,9 @@ export default function EventDetails(
           <div className="flex items-center gap-2">
             <MdLocationOn className="text-fosho-red text-xl"/>
             <p className="text-sm font-medium">
-              {event.location}
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {event.location}
+              </ReactMarkdown>
             </p>
           </div> :
           ""
@@ -115,7 +119,9 @@ export default function EventDetails(
       </div>
       <h2 className={`${bebas.className} text-2xl mt-4 mb-2`}>description</h2>
       <div className="bg-background-second py-2 px-4 rounded-lg text-sm">
-        {event.description }
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {event.description }
+        </ReactMarkdown>
       </div>
     </div>
   )
