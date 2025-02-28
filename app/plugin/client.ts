@@ -22,6 +22,7 @@ export interface EventInfo extends EventInfoWoPubkey {
   eventEndsAt: number | null
   registrationStartsAt: number | null
   registrationEndsAt: number | null
+  cancellationOverAt: number | null
   capacity: number | null
   current: number
   location: string | null
@@ -37,6 +38,7 @@ const defaultValues = {
   eventEndsAt: null,
   registrationStartsAt: null,
   registrationEndsAt: null,
+  cancellationOverAt: null,
   capacity: null,
   current: 0,
   location: null,
@@ -49,6 +51,14 @@ export function getEventCollectionKey(event: PublicKey) {
     Buffer.from("event"),
     event.toBuffer(),
     Buffer.from("collection")
+  ], new PublicKey(idl.address))
+}
+
+export function getAttendeeKey(event: PublicKey, wallet: PublicKey) {
+  return PublicKey.findProgramAddressSync([
+    Buffer.from("attendee"),
+    event.toBytes(),
+    wallet.toBytes()
   ], new PublicKey(idl.address))
 }
 
@@ -121,6 +131,7 @@ export function parseEvents(
       eventWithDefaults.eventEndsAt = attribute.key === "eventEndsAt" ? parseInt(attribute.value) * 1000 : eventWithDefaults.eventEndsAt
       eventWithDefaults.registrationEndsAt = attribute.key === "registrationEndsAt" ? parseInt(attribute.value) * 1000 : eventWithDefaults.registrationEndsAt
       eventWithDefaults.registrationStartsAt = attribute.key === "registrationStartsAt" ? parseInt(attribute.value) * 1000 : eventWithDefaults.registrationStartsAt
+      eventWithDefaults.cancellationOverAt = attribute.key === "cancellationOverAt" ? parseInt(attribute.value) * 1000 : eventWithDefaults.cancellationOverAt
       eventWithDefaults.capacity = attribute.key === "capacity" ? parseInt(attribute.value) : eventWithDefaults.capacity
       eventWithDefaults.location = attribute.key === "location" ? attribute.value : eventWithDefaults.location
       eventWithDefaults.virtualLink = attribute.key === "virtualLink" ? attribute.value : eventWithDefaults.virtualLink

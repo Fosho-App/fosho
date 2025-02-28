@@ -29,7 +29,7 @@ export function Attendee(
           <span className="text-red-400">Rejected</span>
           }
           {isOwner && attendee.status.pending ?
-            <FaCheck className="font-bold" onClick={() => verifyUsers(attendee.publicKey.toBase58())}/>
+            <FaCheck className="font-bold" onClick={() => verifyUsers(attendee.owner.toBase58())}/>
           : null}
         </p>
       </div>

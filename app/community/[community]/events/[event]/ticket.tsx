@@ -12,12 +12,13 @@ import { useCancelCommit } from "@/app/hooks/useCancelCommit";
 import { PublicKey } from "@solana/web3.js";
 
 export default function Ticket(
-  {attendee, organizer, communityKey, eventKey}:
+  {attendee, organizer, communityKey, eventKey, cancelOverAt}:
   {
     attendee: AttendeeInfo | null | undefined, 
     organizer: string, 
     communityKey: PublicKey, 
-    eventKey: PublicKey
+    eventKey: PublicKey,
+    cancelOverAt: number | null
   }
 ) {
 
@@ -50,9 +51,11 @@ export default function Ticket(
             <QRCodeCanvas value={attendee.publicKey.toBase58()} />
           </div>
           <div className={`text-gray-400 ${inter.className} text-sm`}>OR</div>
-          <DefaultButton full={true} onClick={cancelCommit} disabled={isPending || isSuccess}>
-            Cancel Commitment
-          </DefaultButton>
+          {typeof cancelOverAt === 'number' && Date.now() < cancelOverAt &&
+            <DefaultButton full={true} onClick={cancelCommit} disabled={isPending || isSuccess}>
+              Cancel Commitment
+            </DefaultButton>
+          }
           {
             isError && 
             <div className="text-sm my-2 text-center text-red-500">

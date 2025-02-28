@@ -96,6 +96,7 @@ export default function Event() {
               organizer={currentEvent.organizer}
               communityKey={new PublicKey(communityKey)}
               eventKey={currentEvent.publicKey} 
+              cancelOverAt={currentEvent.cancellationOverAt}
             /> :
           attendeeRecord?.status.rejected ?
             <EventOver eventOverType={EventOverType.Rejected} /> :

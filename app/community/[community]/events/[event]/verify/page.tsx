@@ -71,7 +71,7 @@ export default function VerifyUser() {
   function backToEvent() {
     router.push(`/community/${community}/events/${event}`)
   }
-
+  
   return (
     <div className="m-2">
       {attendeeKey ? 

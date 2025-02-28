@@ -4,11 +4,13 @@ import { useGetCommunity } from "@/app/hooks/useCommunity";
 import { useGetAttendeesForEvent } from "@/app/hooks/useGetAttendee";
 import { useGetEvent } from "@/app/hooks/useGetEvents";
 import { useGetProfilesData } from "@/app/hooks/useProfileData";
+import { getAttendeeKey } from "@/app/plugin/client";
 import { ClientContext, ClientContextType } from "@/app/providers/client-provider";
 import { Attendee } from "@/app/ui/event/attendee";
 import { bebas } from "@/app/ui/fonts";
 import MainNav from "@/app/ui/navs/main-nav";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
 import { useParams, useRouter } from "next/navigation";
 import { useContext } from "react";
 import { IoChevronBack } from "react-icons/io5";
@@ -31,7 +33,12 @@ export default function Attendees() {
     router.push(`/community/${community}/events/${event}`)
   }
 
-  function verifyUsers(attendeeKey: string) {
+  function verifyUsers(walletKey: string) {
+    const attendeeKey = getAttendeeKey(
+      new PublicKey(event as string), 
+      new PublicKey(walletKey)
+    )[0].toBase58()
+    
     router.push(`/community/${community}/events/${event}/verify?user=${attendeeKey}`)
   }
 
