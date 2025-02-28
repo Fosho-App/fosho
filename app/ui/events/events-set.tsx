@@ -13,7 +13,9 @@ export default function EventsSet(
     if (showPastEvents) {
       setEventsToShow(events)
     } else {
-      setEventsToShow(events.filter((event) => event.registrationEndsAt && event.registrationEndsAt > Date.now()))
+      setEventsToShow(events.filter(
+        (event) => !event.eventEndsAt  || event.eventEndsAt && event.eventEndsAt > Date.now())
+      )
     }
   }, [showPastEvents, events])
 
