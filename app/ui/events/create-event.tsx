@@ -40,7 +40,7 @@ export default function CreateEventForm(
   }
 
   return (
-    <div className="">
+    <div className="dark:[color-scheme:dark]">
       <div className="flex flex-col gap-[2px]">
         <label htmlFor="" className={`${bebas.className}`}>Event name</label>
         <input type="text" id="" className="p-1 bg-[#222222] border-[1px] border-[#414141] rounded-lg" 
