@@ -86,7 +86,7 @@ export default function CreateEventForm(
         <div className="flex flex-col gap-[2px] w-1/2">
           <label htmlFor="" className={`${bebas.className}`}>Event Starts On</label>
           <input type="date" id="" className="p-1 bg-[#222222] border-[1px] border-[#414141] rounded-lg" 
-            value={`${new Date(event.eventStartsAt).getFullYear()}-${(new Date(event.eventStartsAt).getMonth()+1).toString().padStart(2,"0")}-${new Date(event.eventStartsAt).getDate()}`} 
+            value={`${new Date(event.eventStartsAt).getFullYear()}-${(new Date(event.eventStartsAt).getMonth()+1).toString().padStart(2,"0")}-${new Date(event.eventStartsAt).getDate().toString().padStart(2,"0")}`} 
             onChange={(e) => handleDateChange(e.target.value, 'eventStartsAt', true)}
           />
         </div>
@@ -102,7 +102,7 @@ export default function CreateEventForm(
         <div className="flex flex-col gap-[2px] w-1/2">
           <label htmlFor="" className={`${bebas.className}`}>Event Ends On</label>
           <input type="date" id="" className="p-1 bg-[#222222] border-[1px] border-[#414141] rounded-lg" 
-            value={`${new Date(event.eventEndsAt).getFullYear()}-${(new Date(event.eventEndsAt).getMonth()+1).toString().padStart(2,"0")}-${new Date(event.eventEndsAt).getDate()}`} 
+            value={`${new Date(event.eventEndsAt).getFullYear()}-${(new Date(event.eventEndsAt).getMonth()+1).toString().padStart(2,"0")}-${new Date(event.eventEndsAt).getDate().toString().padStart(2,"0")}`} 
             onChange={(e) => handleDateChange(e.target.value, 'eventEndsAt', true)}
           />
         </div>
@@ -118,7 +118,7 @@ export default function CreateEventForm(
         <div className="flex flex-col gap-[2px] w-1/2">
           <label htmlFor="" className={`${bebas.className}`}>Reg. Deadline Date</label>
           <input type="date" id="" className="p-1 bg-[#222222] border-[1px] border-[#414141] rounded-lg" 
-            value={`${new Date(event.registrationEndsAt).getFullYear()}-${(new Date(event.registrationEndsAt).getMonth()+1).toString().padStart(2,"0")}-${new Date(event.registrationEndsAt).getDate()}`} 
+            value={`${new Date(event.registrationEndsAt).getFullYear()}-${(new Date(event.registrationEndsAt).getMonth()+1).toString().padStart(2,"0")}-${new Date(event.registrationEndsAt).getDate().toString().padStart(2,"0")}`} 
             onChange={(e) => handleDateChange(e.target.value, 'registrationEndsAt', true)}
           />
         </div>
