@@ -100,6 +100,8 @@ export default function Event() {
             /> :
           attendeeRecord?.status.rejected ?
             <EventOver eventOverType={EventOverType.Rejected} /> :
+          attendeeRecord?.status.claimed ?
+            <EventOver eventOverType={EventOverType.Claimed} /> :
             <EventOver eventOverType={EventOverType.ClaimOver} /> :
         null}
         {publicKey && community?.authority.equals(publicKey) ?

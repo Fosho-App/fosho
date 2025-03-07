@@ -4,7 +4,8 @@ export enum EventOverType {
   CommitOver,
   ClaimOver,
   Rejected,
-  Cancelled
+  Cancelled,
+  Claimed
 }
 
 export function EventOver({eventOverType}: {eventOverType: EventOverType}) {
@@ -17,6 +18,8 @@ export function EventOver({eventOverType}: {eventOverType: EventOverType}) {
           "The event is over. You can no longer commit to the event." :
         eventOverType === EventOverType.Cancelled ?
           "You cannot re-commit to the event." :
+        eventOverType === EventOverType.Claimed ?
+          "You have already claimed the commitment fees." :
           "Your commitment has been rejected."
       }
     </h3>

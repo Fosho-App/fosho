@@ -4,7 +4,8 @@ import { Program } from "@coral-xyz/anchor"
 import { PublicKey } from "@solana/web3.js"
 
 const verifiedCommunities = [
-  "2EwTGqY8A5yW7A14V3BpQiGxGA5aveZFN3EWC2RxvfAu"
+  "2EwTGqY8A5yW7A14V3BpQiGxGA5aveZFN3EWC2RxvfAu",
+  //"EbHr3xQ6THjSeLcuxk7xx4JxbQZni3YyMrpz4y1riyeK"
 ]
 
 export function useGetCommunities(client: Program<FoshoProgram>) {
