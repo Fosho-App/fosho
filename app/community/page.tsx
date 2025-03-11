@@ -24,14 +24,14 @@ export default function Communities() {
       <MainNav />
       <BebasH2Heading title="Communities" />
       {communities ?
-        <div className="grid grid-cols-2 grid-flow-rows gap-2 mt-2">
-          {communities.map(community => (
+        <div className="grid grid-cols-2 grid-flow-rows gap-2 mt-2 mb-12">
+          {communities.map((community,i) => (
             <div 
               key={community.publicKey.toBase58()} 
               onClick={() => goToCommunity(community.publicKey)}
             >
               <img 
-                src="/images/communities/islanddao.png" 
+                src={`/images/communities/${i}.png`}
                 alt={community.name}
                 className="rounded-md cursor-pointer"
               />

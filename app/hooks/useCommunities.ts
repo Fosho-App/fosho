@@ -5,6 +5,8 @@ import { PublicKey } from "@solana/web3.js"
 
 const verifiedCommunities = [
   "2EwTGqY8A5yW7A14V3BpQiGxGA5aveZFN3EWC2RxvfAu",
+  "2j5maKqptUmQ8UdbcX34NCSJ7cq3TbKZbEYCrDfcKZrn",
+  "Au3huRr6GJBrLg6JMQ3YqByEs5eZZv2peDf94m7EmotM"
   //"EbHr3xQ6THjSeLcuxk7xx4JxbQZni3YyMrpz4y1riyeK"
 ]
 
